@@ -1537,8 +1537,6 @@ server respectively.  Line breaks that do not start a new "C:" or
           <t>
             This element of service allows the originator to indicate to the recipient the names or one or more persons who authorized the sending of the messages.
           </t>
- <!--////Align with Steve's proposal to define a new MMHS-Authorized-Users header field
-         and corresponding S/MIME rule update-->         
           <t>
             The Authorizing Users Indication element of service MUST be conformant with the Draft and Release using Internet Email specification [[id-ref]]. In addition, the Sender header field as defined in <xref target="RFC5322"/> (carrying the Originator Indication) MUST also be present in accordance with <xref target="RFC2156"/>. 
           </t>
@@ -1555,7 +1553,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         <section title="Blind Copy Recipient Indication" anchor="Blind-Copy-Recipient-Indication">
           <t>
             This element of service enable the originator to  provide the address of one or more additional intended recipients of the message being sent. These names are not disclosed to the primary, copy or other blind copy recipients. This service can be used to keep some recipient names and addressed hidden from other recipients. This service can be used to send a courtesy copy to drafters or reviewers of a message, when internal information, such as who drafted or reviewed the message, is not to be disclosed to the recipient(s).
-            Separate copies of the mesage MUST be submitted to the Mail Transfer Agent for the open recipients (primary and copy recpients) and for each blind copy recipient. The messages sent to each of blind copy recipients MUST contain same MM Identification as the message sent to the open recipients.
+            Separate copies of the mesage MUST be submitted to the Mail Transfer Agent for the open recipients (primary and copy recipients) and for each blind copy recipient. The messages sent to each of blind copy recipients MUST contain same MM Identification as the message sent to the open recipients.
           </t>
           <t>
             The Blind Copy Recipient Indication MUST use the Bcc header field, as defined in <xref target="RFC5322"/>.
@@ -1612,7 +1610,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Delivery Notification" anchor="Delivery-Notification">
           <t>
-            This element of service enables the originating MUA to request that the originating MUA be explicitly notified whgen a submitted military message has been successfully delivered to a recipient MUA. This notification is convered by a delivery report. The delivery report is related to the submitted mesages by means of a message identifier and includes the date and time of delivery. Receipt of a delivery report at the originating MUA results in the the generation of a delivery notification to the originator. In the case of multi-destination military messages, this service shall be selectable on a per recipient basis. 
+            This element of service enables the originating MUA to request that the originating MUA be explicitly notified when a submitted military message has been successfully delivered to a recipient MUA. This notification is convered by a delivery report. The delivery report is related to the submitted mesages by means of a message identifier and includes the date and time of delivery. Receipt of a delivery report at the originating MUA results in the the generation of a delivery notification to the originator. In the case of multi-destination military messages, this service shall be selectable on a per recipient basis. 
             </t>
           <t>
             This element of service MUST be supported using the NOTIFY parameter of the ESMTP RCPT command with as value of SUCCESS, as defined in <xref target="RFC3461"/>.
@@ -1653,7 +1651,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="DL Expansion Prohibited" anchor="DL-Expansion-Prohibited">
           <t>
-            This element of servcie allows an originating user to specify that if any of the recipient names can directly, or be reassignment, refer to a distribution, then no expansion of the distribution shall occur. Instead, a non-delivery notification shall be returned to the originating Mail User Agent. 
+            This element of service allows an originating user to specify that if any of the recipient names can directly, or be reassignment, refer to a distribution, then no expansion of the distribution shall occur. Instead, a non-delivery notification shall be returned to the originating Mail User Agent. 
           </t>
           <t>
             [[What are we going to do here?]]
@@ -1661,7 +1659,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Expiry Date Indication" anchor="Expiry-Date-Indication">
           <t>
-            This element of service allows the originator to indicate to the recipientthe date and time afdter which the message is considered invalid. The intent of this element of service is to state the originator's assessment of the current applicability of a message. If the Expiry Date Indication is present, it shall be displayed to the recipients(s) to indicate the time after which this message should be longer be acted upon. It is left to the discretion of the recipient as to whether or not the message is discarded. 
+            This element of service allows the originator to indicate to the recipient the date and time after which the message is considered invalid. The intent of this element of service is to state the originator's assessment of the current applicability of a message. If the Expiry Date Indication is present, it shall be displayed to the recipients(s) to indicate the time after which this message should be longer be acted upon. It is left to the discretion of the recipient as to whether or not the message is discarded. 
           </t>
           <t>
             The Expiry Date Indication element of service, if supported by the MMHS, SHALL use the Expires header field, as defined in <xref target="RFC2156"/>
@@ -1677,7 +1675,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Forwarded MM Indication" anchor="Forwarded-MM-Indication">
           <t>
-            This element of service allows an message, pluys its delivery information to be sent as a body part inside another message. In a multi-part body the forwarded message may be one of serveral body parts of various types. 
+            This element of service allows a message, plus its delivery information to be sent as a body part inside another message. In a multi-part body the forwarded message may be one of serveral body parts of various types. 
           </t>
           <t>
             The Forwarded MM Indication element of service, if supported by the MMHS, SHALL use the Content Type header field, as defined in <xref target="RFC2045"/> with the value "message/rfc822" and use the Content Type Indication, as defined in <xref target="Content-Type-Indication"/>, within the headers of the embedded message.
@@ -1790,7 +1788,6 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Originator Indication" anchor="Originator-Indication">
           
-<!--////Align with Steve's proposal (see above)-->
           <t>
             The Originator Indication MUST use the MMHS-Authorizing-Users header field, as defined in [[id-ref]], when the Authorizing Users Indication is present in the message and the Sender header field, as defined in <xref target="RFC5322"/>, when the Authorising Users Indication is not present in the message.
           </t>
@@ -2141,7 +2138,7 @@ server respectively.  Line breaks that do not start a new "C:" or
           This security profile is aligned with the "Profile for the Use of the Cryptographic Message Syntax (CMS) and Enhanced Security Services (ESS) for S/MIME", <xref target="STANAG-4631"/>.
         </t>
         <t>
-          In order for particpating organisations (or domains) to obtain secure interoperability additional bilateral agreements on the labeling, cryptographic algorithms and Public Key Infrastructure (PKI) needs to be achieved.
+          In order for participating organisations (or domains) to obtain secure interoperability additional bilateral agreements on the labeling, cryptographic algorithms and Public Key Infrastructure (PKI) needs to be achieved.
         </t>
         <section title="S/MIME Cryptographic Message Syntax Content Types">
           <t>
@@ -2474,7 +2471,6 @@ Do requirements on the sending side differs from requirements on the generating 
 
   <t>SMTP extension for for Delivery Status Notifications <xref target="RFC3461"/>.</t>
   
-<!--/////Tell Steve that I made the following 4 mandatory!-->
   <t>SMTP Extension for 8-bit MIME transport <xref target="RFC6152"/>.</t>
   <t>SMTP Extension for Message Size Declaration <xref target="RFC1870"/>.</t>
   <t>SMTP Extension for Command Pipelining <xref target="RFC2920"/>.</t>  
@@ -2533,7 +2529,6 @@ Do requirements on the sending side differs from requirements on the generating 
 
   <t>SMTP extension for for Delivery Status Notifications <xref target="RFC3461"/>.</t>
   
-<!--/////Tell Steve that I made the following 4 mandatory-->  
   <t>SMTP Extension for 8-bit MIME transport <xref target="RFC6152"/>.</t>
   <t>SMTP Extension for Message Size Declaration <xref target="RFC1870"/>.</t>
   <t>SMTP Extension for Command Pipelining <xref target="RFC2920"/>.</t>  

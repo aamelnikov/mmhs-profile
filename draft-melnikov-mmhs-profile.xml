@@ -7,7 +7,7 @@
 <?rfc comments="yes" ?>
 <?rfc inline="yes" ?>
 
-<rfc ipr="trust200902" category="info" docName='draft-melnikov-mmhs-profile-04'>
+<rfc ipr="trust200902" category="info" docName='draft-melnikov-mmhs-profile-05'>
   <front>
     <title abbrev="MMHS over SMTP">
       Military Message Handling System (MMHS) over SMTP
@@ -74,20 +74,56 @@
   </front>
   <middle>
     <section title="Introduction">
-
-<t>
-  A Military Message Handling System (MMHS) processes formal messages ensuring release,
-  distribution, security, and timely delivery across national and international
-  strategic and tactical networks.  The MMHS Elements of Service are defined as
-  a set of extensions to the ITU-T X.400 (1992) international standards and are specified
-  in STANAG 4406 Edition 2 or ACP 123.  This document specifies how a comparable
+      <section title="Overview">
+        <t>
+          A Military Message Handling System (MMHS) processes formal messages ensuring release,
+          distribution, security, and timely delivery across national and international
+          strategic and tactical networks.  The MMHS Elements of Service are defined as
+          a set of extensions to the ITU-T X.400 (1992) international standards and are specified
+          in STANAG 4406 Edition 2 or <xref target="ACP123"/>.  This document specifies an MMHS Profile for how a comparable
   messaging service can be provided using Email Message Format <xref target="RFC5322"/>,
   SMTP <xref target="RFC5321"/> and their extensions.
-</t>
-<t>
-  [[TODO: Discuss MUA, MSA, MS and MTA. Are we going to cite IMAP/POP standards?]]
-</t>
-
+        </t>
+      </section>
+      <section title="MMHS Profile Summary">
+       <t>
+          This non-normative section provides a summary of the sections in this document that specifies the MMHS Profile; refer to the sections that follow for a normative specification of the MMHS Profile.
+        </t>
+        <t>
+          The fundamental purpose of STANAG 4406 Edition 2 or <xref target="ACP123"/> is to define a common message service to be provided between all participating organisations (or domains).  STANAG 4406 Edition 2 and <xref target="ACP123"/> achieve this by defining the Military Messaging Elements of Service (EoS) that are required to be supported. <xref target="ACP123"/> defines EoS as 'abstractions that describe features of a system for which the user of that system has direct access'. Note for the purposes of this MMHS Profile a 'user' can be described as: an end user; an organisation (or domain); a Mail User Agent (MUA); a Mail Submission Agent (MSA); or, a Mail Transfer Agent (MTA). 
+        </t>
+        <t>
+          The MMHS Profile adopts the EoS defined in <xref target="ACP123"/>.
+        </t>
+        <t>
+          <xref target="Elements-of-Service"/> provides a developer-friendly summary (<xref target="Profile-Support"/>) and a detailed definition (<xref target="Basic-Elements-of-Service"/>, <xref target="Optional-Elements-of-Service"/> and <xref target="Military-Elements-of-Service"/>) that specifies:
+          <list style="symbols">
+            <t>
+              the mandatory and optional EoS to be supported in order to claim conformance to this MMHS Profile; and,
+            </t>
+            <t>
+              the relevant IETF RFC Standard that provides the comparable EoS.
+            </t>
+          </list>
+        </t>
+        <t>
+          <xref target="Security-Services"/> describes generic security services independent of the mechanisms used to provide the security (<xref target="General-Security-Elements-of-Service"/>) and profiles the use of Secure Multipurpose Internet Mail Extensions (S/MIME) protocols (<xref target="RFC5751"/>, <xref target="RFC5652"/> and <xref target="RFC2634"/>) and DomainKeys Identified Mail (DKIM) Signatures (<xref target="RFC6376"/>) for implementing these security services (<xref target="Security-Profile"/>).
+        </t>
+        <t>
+          In order to implement an MMHS a number of components are typically deployed to support <xref target="ACP123"/>. The MMHS profile (defined in this document) identifies the requirements on the following SMTP MMHS components in order to claim conformance with the EoS specified in <xref target="Elements-of-Service"/> and the security services specified in <xref target="Security-Services"/> (Note: additional SMTP extensions that provide additional SMTP functionality but do not have equivalent <xref target="ACP123"/> EoS are also included in these sections):
+          <list style="symbols">
+            <t>
+              Mail User Agent (<xref target="mua-reqs"/>);
+            </t>
+            <t>
+              Mail Submission Agent (<xref target="msa-reqs"/>); and,
+            </t>
+            <t>
+              Mail Transfer Agent (<xref target="mta-reqs"/>);
+            </t>
+        </list>
+        </t>
+      </section>
     </section>
     
     <section title="Conventions Used in This Document">
@@ -107,7 +143,7 @@ server respectively.  Line breaks that do not start a new "C:" or
 
     </section>
 
-    <section title="Elements of Service">
+    <section title="Elements of Service" anchor="Elements-of-Service">
       <section title="Introduction">
         <t>
           The military messaging elements of service are adopted from <xref target="ACP123"/>.
@@ -125,7 +161,7 @@ server respectively.  Line breaks that do not start a new "C:" or
           This profile adopts, where appropriate, header fields that are defined in <xref target="RFC2156"/> to support X.400 elements of service that support military messaging elements of service. <xref target="RFC2156"/> has already addressed the issue of conveying many of the X.400 elements of service within an SMTP messaging system.
           </t>
       </section>
-      <section title="Profile Support">
+      <section title="Profile Support" anchor="Profile-Support">
         <texttable>
           <!--
 		<preamble></preamble>
@@ -133,7 +169,7 @@ server respectively.  Line breaks that do not start a new "C:" or
           <ttcol align="left" width="25%">Element of Service</ttcol>
           <ttcol align="left">ACP123 Reference</ttcol>
           <ttcol align="left">Support</ttcol>
-          <ttcol align="left">IETF Standard</ttcol>
+          <ttcol align="left">SMTP Standard</ttcol>
           <ttcol align="left" width="20%">Header Field/Parameter</ttcol>
           <c>
             <xref target="Access-Management">Access Management</xref>
@@ -1356,16 +1392,13 @@ server respectively.  Line breaks that do not start a new "C:" or
         </texttable>
       </section>
 
-      <section title="Basic Elements of Service">
+      <section title="Basic Elements of Service" anchor="Basic-Elements-of-Service">
         <section title="Access Management" anchor="Access-Management">
           <t>
             This element of service enables an Mail User Agent and an Mail Transfer Agent to establish access and manage information associated with access establishment. This includes the ability to identify and validate the identity of the other.
           </t>
           <t>
             Strong authentication in the bind operation is mandatory. Strong authentication MUST be supported using SMTP Extension for Authentication <xref target="RFC4954"/> and SMTP Extension for Secure SMTP over TLS <xref target="RFC3207"/>.
-          </t>
-          <t>
-            [[Q: Do we need to identify the SASL mechanisms to use here?]]
           </t>
         </section>
         <section title="Content Type Indication" anchor="Content-Type-Indication">
@@ -1378,7 +1411,16 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Converted Indication" anchor="Converted-Indication">
           <t>
-            [[TBD]]
+            This element of service indicates to each recipient UA (i.e., on per-recipient basis) that the performed conversion on the Encoded Information Types (EITs) within a delivered message.
+          </t>
+          <t>
+            Security requirements and mechanisms may not allow conversion to take place within the MMHS.
+          </t>
+          <t>
+            However, messages entering the MMHS from a gateway (e.g., a civilian X.400 domain, an ACP 127 tactical gateway) may carry the converted indication.
+          </t>
+          <t>
+            The Converted Indication, if present, MUST use the X400-Received header field as defined in <xref target="RFC2156"/>.
           </t>
         </section>
         <section title="Delivery Time Stamp Indication" anchor="Delivery-Time-Stamp-Indication">
@@ -1436,17 +1478,44 @@ server respectively.  Line breaks that do not start a new "C:" or
         <section title="Typed Body" anchor="Typed-Body">
           <t>
 <!--////Not sure what this mean!-->            
-            This element of service allows the nature of attributes of the body of the message to be conveyed along with the body.
+            This element of service allows the nature and attributes of the body of the message, whereby the nature and attributes describe the body of the message, to be conveyed along with the body.
           </t>
-          <t></t>
+          <t>
+            The MMHS MUST support this element of service whereby:
+            <list style="symbols">
+            <t>
+              A Mail User Agent MUST support Multipurpose Internet Mail Extensions (MIME) <xref target="RFC2045"/>, <xref target="RFC2046"/>, <xref target="RFC2047"/> and <xref target="RFC2049"/>; and,
+            </t>
+            <t>
+              A Mail Submission Agent MUST support SMTP Extension for 8-bit MIME transport <xref target="RFC6152"/>.
+            </t>
+          </list>
+          </t>
         </section>
         <section title="User/UA Capabilities Registration" anchor="User-UA-Capabilities-Registration">
           <t>
-            [[TBD: do we want to talk about IMAP?]]
+            This element of service enables a MUA to indicate to the MMHS unrestricted use of any or all of the following capabilities with respect to received messages:
+            <list style="symbols">
+              <t>
+                the content type(s) of messages it is willing to accept;
+              </t>
+              <t>
+                the maximum content length of a message it is willing to accept; and
+              </t>
+              <t>
+                the Encoded Information Type(s) of messages it is willing to accept.
+              </t>
+          </list>
+          </t>
+          <t>
+            There is no current SMTP service that supports this element of service. Therefore this profile does not support this element of service.
+          </t>
+          <t>
+            However, this element of service MAY be supported by an MUA that supports Internet Message Access Protocol (<xref target="RFC3501"/>) or by MUAs and other MMHS components that provide proprietary mechanisms (i.e Directory Services).
           </t>
         </section>
       </section>
-      <section title="Optional Elements of Service">
+      <section title="Optional Elements of Service" anchor="Optional-Elements-of-Service">
         <section title="Alternate Recipient Allowed" anchor="Alternate-Recipient-Allowed">
           <t>
             This element of service enables an originating Mail User Agent to specify that the message being submiited can be redirected to an alternate recipient. Unless an originator specifically request that an alternate recipient be disallowed, all Military Messages will indicate that an alternate recipient is allowed.
@@ -1471,7 +1540,7 @@ server respectively.  Line breaks that do not start a new "C:" or
  <!--////Align with Steve's proposal to define a new MMHS-Authorized-Users header field
          and corresponding S/MIME rule update-->         
           <t>
-            The Authorizing Users Indication MUST use the From header field, as defined in <xref target="RFC5322"/>, present in the message and in addition the Sender header field (carrying the Originator Indication) MUST also be present in accordance with <xref target="RFC2156"/>.          
+            The Authorizing Users Indication element of service MUST be conformant with the Draft and Release using Internet Email specification [[id-ref]]. In addition, the Sender header field as defined in <xref target="RFC5322"/> (carrying the Originator Indication) MUST also be present in accordance with <xref target="RFC2156"/>. 
           </t>
         </section>
         <section title="Auto-forwarded Indication" anchor="Auto-Forwarded-Indication">
@@ -1486,7 +1555,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         <section title="Blind Copy Recipient Indication" anchor="Blind-Copy-Recipient-Indication">
           <t>
             This element of service enable the originator to  provide the address of one or more additional intended recipients of the message being sent. These names are not disclosed to the primary, copy or other blind copy recipients. This service can be used to keep some recipient names and addressed hidden from other recipients. This service can be used to send a courtesy copy to drafters or reviewers of a message, when internal information, such as who drafted or reviewed the message, is not to be disclosed to the recipient(s).
-            Separate copies of the mesage MUST be submitted to the Mail Transfer Agent for the open recipients (primary and copy recipients) and for each blind copy recipient. The messages sent to each of blind copy recipients MUST contain same MM Identification as the message sent to the open recipients.
+            Separate copies of the mesage MUST be submitted to the Mail Transfer Agent for the open recipients (primary and copy recpients) and for each blind copy recipient. The messages sent to each of blind copy recipients MUST contain same MM Identification as the message sent to the open recipients.
           </t>
           <t>
             The Blind Copy Recipient Indication MUST use the Bcc header field, as defined in <xref target="RFC5322"/>.
@@ -1527,7 +1596,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Deferred Delivery" anchor="Deferred-Delivery">
           <t>
-            This element of service enables an originating Mail User Agent to instruct the Mail Transfer Agent that a military message being submitted shall be delivered no sooner than a specified date and time. When this service is requested, it MUST be logged for audit and tracing purposes.
+            This element of service enables an originating Mail User Agent to instruct the Mail Transfer Agent that a military message being submitted shall be delivered no sooner than a specified date and time. When tis service is requested, it MUST be logged for audit and tracing purposes.
           </t>
           <t>
             Deferred Delivery MUST be specified in accordance with <xref target="RFC4865" />
@@ -1543,7 +1612,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Delivery Notification" anchor="Delivery-Notification">
           <t>
-            This element of service enables the originating MUA to request that the originating MUA be explicitly notified when a submitted military message has been successfully delivered to a recipient MUA. This notification is convered by a delivery report. The delivery report is related to the submitted mesages by means of a message identifier and includes the date and time of delivery. Receipt of a delivery report at the originating MUA results in the the generation of a delivery notification to the originator. In the case of multi-destination military messages, this service shall be selectable on a per recipient basis. 
+            This element of service enables the originating MUA to request that the originating MUA be explicitly notified whgen a submitted military message has been successfully delivered to a recipient MUA. This notification is convered by a delivery report. The delivery report is related to the submitted mesages by means of a message identifier and includes the date and time of delivery. Receipt of a delivery report at the originating MUA results in the the generation of a delivery notification to the originator. In the case of multi-destination military messages, this service shall be selectable on a per recipient basis. 
             </t>
           <t>
             This element of service MUST be supported using the NOTIFY parameter of the ESMTP RCPT command with as value of SUCCESS, as defined in <xref target="RFC3461"/>.
@@ -1565,7 +1634,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Disclosure of Other Recipients" anchor="Disclosure-of-Other">
           <t>
-            This element of service enables the originating MTA to instruct the MTS to disclose the address of all other recipient of a multi-recipient military message to each recipient MUA, upon delivery of the message. The addresses disclosed are as supplied by the originating MUA or the results of address list expansion.
+            This element of service enables the originating MTA to instruct the MTS to disclose the address of all oter recipient of a multi-recipient military message to each recipient MUA, upon delivery of the message. The addresses disclosed are as supplied by the originating MUA or the results of address list expansion.
           </t>
           <t>
             Disclosure of Other Recipients is not supported by this profile.
@@ -1584,7 +1653,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="DL Expansion Prohibited" anchor="DL-Expansion-Prohibited">
           <t>
-            This element of service allows an originating user to specify that if any of the recipient names can directly, or be reassignment, refer to a distribution, then no expansion of the distribution shall occur. Instead, a non-delivery notification shall be returned to the originating Mail User Agent. 
+            This element of servcie allows an originating user to specify that if any of the recipient names can directly, or be reassignment, refer to a distribution, then no expansion of the distribution shall occur. Instead, a non-delivery notification shall be returned to the originating Mail User Agent. 
           </t>
           <t>
             [[What are we going to do here?]]
@@ -1592,7 +1661,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Expiry Date Indication" anchor="Expiry-Date-Indication">
           <t>
-            This element of service allows the originator to indicate to the recipient the date and time after which the message is considered invalid. The intent of this element of service is to state the originator's assessment of the current applicability of a message. If the Expiry Date Indication is present, it shall be displayed to the recipients(s) to indicate the time after which this message should be longer be acted upon. It is left to the discretion of the recipient as to whether or not the message is discarded. 
+            This element of service allows the originator to indicate to the recipientthe date and time afdter which the message is considered invalid. The intent of this element of service is to state the originator's assessment of the current applicability of a message. If the Expiry Date Indication is present, it shall be displayed to the recipients(s) to indicate the time after which this message should be longer be acted upon. It is left to the discretion of the recipient as to whether or not the message is discarded. 
           </t>
           <t>
             The Expiry Date Indication element of service, if supported by the MMHS, SHALL use the Expires header field, as defined in <xref target="RFC2156"/>
@@ -1608,14 +1677,31 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Forwarded MM Indication" anchor="Forwarded-MM-Indication">
           <t>
-            This element of service allows an message, plus its delivery information to be sent as a body part inside another message. In a multi-part body the forwarded message may be one of serveral body parts of various types. 
+            This element of service allows an message, pluys its delivery information to be sent as a body part inside another message. In a multi-part body the forwarded message may be one of serveral body parts of various types. 
           </t>
           <t>
             The Forwarded MM Indication element of service, if supported by the MMHS, SHALL use the Content Type header field, as defined in <xref target="RFC2045"/> with the value "message/rfc822" and use the Content Type Indication, as defined in <xref target="Content-Type-Indication"/>, within the headers of the embedded message.
           </t>
         </section>
         <section title="Grade of Delivery Selection" anchor="Grade-Of-Delivery-Selection">
-
+          <t>
+            This element of service enables an originating MUA to request that transfer through the MMHS take place at a selected priority. The time periods defined for each grade of delivery must be specified in an organisation (or domain) policy and bilaterally agreed between participating organisations (or domains).
+          </t>
+          <t>
+            The Grade of Delivery Selection element of service MUST be supported by the MMHS, using the MT-Priority header field, as defined in <xref target="RFC6758"/>.
+          </t>
+          <t>
+            The Grade of Delivery Selection MT-Priority header field value MUST be derived from the Primary Precedence (<xref target="Primary-Precedence"/>) MMHS-Primary-Precedence header field value.
+          </t>
+          <t>
+            The MMHS message may have no primary recipients (therefore no Primary Precedence); the Grade of Delivery Selection MT-Priority header field value MUST be derived from the Copy Precedence (<xref target="Copy-Precedence"/>) MMHS-Copy-Precedence header field value.
+          </t>
+          <t>
+            The mapping between the Grade of Delivery Selection MT-Priority header field values and the Primary Precedence MMHS-Primary-Precedence header field values (and subsequently the Copy Precedence MMHS-Copy-Precedence header field values) MUST support the "STANAG4406" Priority Assignment Policy specified in <xref target="RFC6758"/> Appendix A.
+          </t>
+          <t>
+            The Grade of Delivery Selection MT-Priority MUST not be displayed to the recipient by the MUA. An indication of the Grade of Delivery selection element of service is provided to the recipient MUA by the Primary and Copy Precedence.  
+          </t>
         </section>
         <section title="Hold for Delivery" anchor="Hold-For-Delivery">
           <t>
@@ -1654,10 +1740,28 @@ server respectively.  Line breaks that do not start a new "C:" or
 
         </section>
         <section title="Multi-destination Delivery" anchor="Multi-Destination-Delivery">
-
+          <t>
+            This element of service allows an originating MUA to specify that a message being submitted is to be delivered to more than one recipient MUA. This does not imply simultaneous delivery to all specified recipient MUAs.
+          </t>
+          <t>
+            The Multi-destination Delivery element of service is supported by the SMTP RCPT command as defined in <xref target="RFC5321"/>.
+          </t>
         </section>
         <section title="Multi-part Body" anchor="Multi-Part-Body">
-
+          <t>
+            This element of service allows an originator to send a message that is partitioned into several parts. The nature and attributes, or type, of each body part are conveyed along with the body part. This enables the multiple parts to be of different encoded information types.
+          </t>
+          <t>
+            The MMHS MUST support this element of service whereby:
+            <list style="symbols">
+              <t>
+                A Mail User Agent MUST support Multipurpose Internet Mail Extensions (MIME) <xref target="RFC2045"/>, <xref target="RFC2046"/>, <xref target="RFC2047"/> and <xref target="RFC2049"/>; and,
+              </t>
+              <t>
+                A Mail Submission Agent MUST support SMTP Extension for 8-bit MIME transport <xref target="RFC6152"/>.
+              </t>
+            </list>
+          </t>
         </section>
         <section title="Non-receipt Notification Request Indication" anchor="Non-Receipt-Notification-Request-Indication">
           <t>
@@ -1686,9 +1790,11 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Originator Indication" anchor="Originator-Indication">
           
-<!--////Align with Steve's proposal (see above)-->          
+<!--////Align with Steve's proposal (see above)-->
           <t>
-            The Originator Indication MUST use the From header field, as defined in <xref target="RFC5322"/>, when the Authorizing Users Indication is present in the message, and the Sender header field, as defined in <xref target="RFC5322"/>, when the Authorsing Users Indication is not present in the message.
+            The Originator Indication MUST use the MMHS-Authorizing-Users header field, as defined in [[id-ref]], when the Authorizing Users Indication is present in the message and the Sender header field, as defined in <xref target="RFC5322"/>, when the Authorising Users Indication is not present in the message.
+          </t>
+          <t>
             This conditional use of different header fields is required to support interoperability with <xref target="ACP123"/> and <xref target="STANAG-4406"/> X.400 systems that utilise a MIXER compliant gateway, <xref target="RFC2156"/>.
           </t>
 
@@ -1753,7 +1859,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             This element of service enables a MUA to instruct the MTA to redirect incoming MMHS messages addressed to it, to another MUA or to an Address List (AL), for a specified period of time, or until revoked.
           </t>
           <t>
-            There is currently no SMTP service that supports this element of service. Therefore the Redirection of Incoming Messages element of service is not supported by this profile. However, note that some MTA/MDA products MAY be able to enforce a local security policy supporting this element of service with proprietary mechanisms.
+            There is currently no SMTP service that supports this element of service. Therefore the Redirection of Incoming Messages element of service is not supported by this profile. However, note that some MTA <!-- MDA --> products MAY be able to enforce a local security policy supporting this element of service with proprietary mechanisms.
           </t>
         </section>
         <section title="Reply Request Indication" anchor="Reply-Request-Indication">
@@ -1799,7 +1905,7 @@ server respectively.  Line breaks that do not start a new "C:" or
 
         </section>
       </section>
-      <section title="Military Elements of Service">
+      <section title="Military Elements of Service" anchor="Military-Elements-of-Service">
         <t>
           This section profiles the MMHS Header Fields for use in the MMHS as specified in <xref target="RFC6477"/>.
         </t>
@@ -1896,32 +2002,32 @@ server respectively.  Line breaks that do not start a new "C:" or
     </section>
     <section title="Security Services" anchor="Security-Services">
       <t>
-        An MMHS MAY support security services. The security services specified in this profile are based on the Secure Multipurpose Internet Mail Extensions (S/MIME) protocols and DomainKeys Identified Mail (DKIM) Signatures specified in <xref target="RFC6376"/>. The S/MIME protocols Message Specification <xref target="RFC5751"/>, Cryptographic Message Syntax <xref target="RFC5652"/> and Enhanced Security Services for S/MIME <xref target="RFC2634"/> specify a consistent way to securely send and receive MIME messages providing end to end integrity, authentication, non-repudiation and confidentiality. DKIM's primary purpose is to define an organization-level digital signature authentication framework for Internet email, using public key cryptography and using the domain name service as its key server technology. However, it is possible to administer DKIM to support user-level signature granularity. This section describes the elements of service and profiles the use of <xref target="RFC5751"/>, <xref target="RFC5652"/>, <xref target="RFC2634"/> and <xref target="RFC6376"/>.
+        An MMHS MAY support security services. The security services specified in this profile are based on the Secure Multipurpose Internet Mail Extensions (S/MIME) protocols and DomainKeys Identified Mail (DKIM) Signatures specified in <xref target="RFC6376"/>. The S/MIME protocols Message Specification <xref target="RFC5751"/>, Cryptographic Message Syntax <xref target="RFC5652"/> and Enhanced Security Services for S/MIME <xref target="RFC2634"/> specify a consistent way to securely send and receive MIME messages providing end to end integrity, authentication, non-repudiation and confidentiality. DKIM's primary purpose is to define an organization-level digital signature authentication framework for Internet email, using public key cryptography and using the domain name service as its key server technology. However, it is possible to administer DKIM to support user-level signature granularity. This section describes the generic security services and profiles the use of <xref target="RFC5751"/>, <xref target="RFC5652"/>, <xref target="RFC2634"/> and <xref target="RFC6376"/>.
       </t>
-      <section title="Elements of Service">
+      <section title="General Security Elements of Service" anchor="General-Security-Elements-of-Service">
         <t>
-          The security services and the implementation requirements to ensure interoperability of the security solution for the MMHS are detailed below.
+          The general security services and implementation requirements for providing these security services for an MMHS are detailed below.
         </t>
         <section title="Access Control" anchor="Access-Control">
           <t>
-            This element of service provides a means of enforcing the authorization of users to originate and receive messages. Access controls are performed in each MMHS domain in accordance with the security policy in force. MMHS systems MAY enforce their own native security policies, plus any other security policies that have been bilaterally agreed.
+            The Access Control security service provides a means of enforcing the authorization of users to originate and receive messages. Access controls are performed in each MMHS domain in accordance with the security policy in force. MMHS systems MAY enforce their own native security policies, plus any other security policies that have been bilaterally agreed.
           </t>
           <t>
-            An MMHS providing the access control element of service MUST perform access control decisions based on comparing the sensitivity information conveyed in a security label with a user's authorizations.
+            An MMHS providing the access control service MUST perform access control decisions based on comparing the sensitivity information conveyed in a security label (<xref target="Security-Labels"/>) with a user's authorizations.
           </t>
         </section>
         <section title="Authentication of Origin" anchor="Authentication-Of-Origin">
           <t>
-            This element of service provides assurance that the message was originated by the user indicated as the sender by digitally signing the message. However, it must be noted that the implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.
+            The Authentication of Origin security service provides assurance that the message was originated by the user indicated as the sender by digitally signing the message. However, it must be noted that the implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization (or domain) the user belongs to.
           </t>
           <t>
-            If the MMHS provides security services it MUST support the Authentication of Origin element of service.
+            If the MMHS provides security services it MUST support the Authentication of Origin service.
           </t>
           <t>
-            The MMHS SHOULD implement this element of service on origination supporting the SignedData content type (profiled in <xref target="Signed-Data-CT"/>) to apply a digital signature to a MMHS message or, in a degenerate case where there is no signature information, to convey certificates.
+            The MMHS SHOULD implement this service on origination supporting the SignedData content type (profiled in <xref target="Signed-Data-CT"/>) to apply a digital signature to a MMHS message or, in a degenerate case where there is no signature information, to convey certificates.
           </t>
           <t>
-            Alternatively the MMHS MAY implement this element of service on origination supporting DKIM (profiled in <xref target="DKIM-Signatures"/>) to apply a digital signature to a MMHS message.
+            Alternatively the MMHS MAY implement this service on origination supporting DKIM (profiled in <xref target="DKIM-Signatures"/>) to apply a digital signature to a MMHS message.
           </t>
           <t>
             On reception the MMHS MUST support S/MIME and DKIM digital signatures.
@@ -1929,16 +2035,16 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Non-repudiation of Origin" anchor="Non-Repudiation-Of-Origin">
           <t>
-            This element of service provides the recipient with evidence that demonstrates, to a third-party, who originated the message, and will protect against any attempt by the message originator to falsely deny having sent the message. However, it must be noted that the implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.
+            The Non-repudiation of Origin security service provides the recipient with evidence that demonstrates, to a third-party, who originated the message, and will protect against any attempt by the message originator to falsely deny having sent the message. However, it must be noted that the implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.
           </t>
           <t>
-            If the MMHS provides security services it MUST support the Non-repudiation of Origin element of service.
+            If the MMHS provides security services it MUST support the Non-repudiation of Origin service.
           </t>
           <t>
-            The MMHS SHOULD implement this element of service on origination as profiled in <xref target="Signed-Data-CT"/>.
+            The MMHS SHOULD implement this service on origination as profiled in <xref target="Signed-Data-CT"/>.
           </t>
           <t>
-            Alternatively the MMHS MAY implement this element of service on origination supporting DKIM (profiled in <xref target="DKIM-Signatures"/>) to apply a digital signature to a MMHS message.
+            Alternatively the MMHS MAY implement this service on origination supporting DKIM (profiled in <xref target="DKIM-Signatures"/>) to apply a digital signature to a MMHS message.
           </t>
           <t>
             On reception the MMHS MUST support S/MIME and DKIM digital signatures.
@@ -1946,16 +2052,16 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Message Integrity" anchor="Message-Integrity">
           <t>
-            This element of service provides a method of ensuring the content that was received by the recipient(s) is the same as that which was sent by the originator. However, it must be noted that the implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.
+            The Message Integrity security service provides a method of ensuring the content that was received by the recipient(s) is the same as that which was sent by the originator. However, it must be noted that the implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.
           </t>
           <t>
-            If the MMHS provides security services it MUST support the Message Integrity element of service.
+            If the MMHS provides security services it MUST support the Message Integrity service.
           </t>
           <t>
-            The MMHS SHOULD implement this element of service on origination as profiled in <xref target="Signed-Data-CT"/>.
+            The MMHS SHOULD implement this service on origination as profiled in <xref target="Signed-Data-CT"/>.
           </t>
           <t>
-            Alternatively the MMHS MAY implement this element of service on origination supporting DKIM (profiled in <xref target="DKIM-Signatures"/>) to apply a digital signature to a MMHS message.
+            Alternatively the MMHS MAY implement this service on origination supporting DKIM (profiled in <xref target="DKIM-Signatures"/>) to apply a digital signature to a MMHS message.
           </t>
           <t>
             On reception the MMHS MUST support S/MIME and DKIM digital signatures.
@@ -1963,61 +2069,61 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Message Data Separation" anchor="Message-Data-Separation">
           <t>
-            This element of service protects against unauthorized disclosure of the message, and separates data contained in one message from that contained in another message. This element of service can help to enforce need to know restrictions, or enables multiple different user communities to share the same secure network. The service is independent of the network and systems transporting the message.
+            The Message Data Separation security service protects against unauthorized disclosure of the message, and separates data contained in one message from that contained in another message. This service can help to enforce need to know restrictions, or enables multiple different user communities to share the same secure network. The service is independent of the network and systems transporting the message.
           </t>
           <t>
-            The MMHS MAY implement this element of service supporting the EnvelopedData content type (profiled in <xref target="Enveloped-Data-CT"/>) to apply privacy protection to a message. A sender needs to have access to a public key for each intended message recipient to use this service. This content type does not provide authentication.
+            The MMHS MAY implement this service supporting the EnvelopedData content type (profiled in <xref target="Enveloped-Data-CT"/>) to apply privacy protection to a message. A sender needs to have access to a public key for each intended message recipient to use this service. This content type does not provide authentication.
           </t>
         </section>
         <section title="Security Labels" anchor="Security-Labels">
           <t>
-            This element of service provides a method for associating security labels with objects in the MMHS. This then allows a security policy to define what entities can handle messages containing associated security labels. The security label associated with a message MUST indicate the security policy to be followed along with the sensitivity, compartments, and other handling caveats associated with the message. This element of service can be used for purposes such as access control or a source of routing information.
+            The Security Label security service provides a method for associating security labels with objects in the MMHS. This then allows a security policy to define what entities can handle messages containing associated security labels. The security label associated with a message MUST indicate the security policy to be followed along with the sensitivity, compartments, and other handling caveats associated with the message. This service can be used for purposes such as access control or a source of routing information.
           </t>
           <t>
-            If the MMHS supports security services then the MMHS MUST implement this element of service as profiled in <xref target="SP-Security-Labels"/>.
+            If the MMHS supports security services then the MMHS MUST implement this service as profiled in <xref target="SP-Security-Labels"/>.
           </t>
         </section>
         <section title="Non-repudiation of Receipt" anchor="Non-Repudiation-Of-Receipt">
           <t>
-            This element of service provides the originator with evidence that demonstrates, to a third-party, who received the message, and will protect against any attempt by the message recipient to falsely deny having received the message. This evidence is the signed receipt, which includes a digital signature and the certificates necessary to verify it.
+            The Non-repudiation of Receipt security service provides the originator with evidence that demonstrates, to a third-party, who received the message, and will protect against any attempt by the message recipient to falsely deny having received the message. This evidence is the signed receipt, which includes a digital signature and the certificates necessary to verify it.
           </t>
           <t>
-            The MMHS MAY implement this element of service supporting the ReceiptRequest attribute as specified in <xref target="RFC2634"/> Section 2.
+            The MMHS MAY implement this service supporting the ReceiptRequest attribute as specified in <xref target="RFC2634"/> Section 2.
           </t>
         </section>
         <section title="Secure Mailing Lists" anchor="Secure-Mailing-Lists">
           <t>
-            This element of service allows a Mail List Agent (MLA) to take a single message, perform recipient-specific security processing, and then redistributes the message to each member of the Address List (AL) or Mail List (ML).
+            The Secure Mailing Lists security service allows a Mail List Agent (MLA) to take a single message, perform recipient-specific security processing, and then redistributes the message to each member of the Address List (AL) or Mail List (ML).
           </t>
           <t>
-            The MMHS MAY implement this element of service supporting the mlExpansionHistory attribute as specified in <xref target="RFC2634"/> Section 4.
+            The MMHS MAY implement this service supporting the mlExpansionHistory attribute as specified in <xref target="RFC2634"/> Section 4.
           </t>
         </section>
         <section title="Message Counter Signature" anchor="Message-Counter-Signature">
           <t>
-            This element of service allows multiple signatures to be applied to the original signature value in a sequential manner. Thus, the Message Counter-signature service allows supervising users or release authorities to countersign for an originator without invalidating the original signature.
+            The Message Counter Signature security service allows multiple signatures to be applied to the original signature value in a sequential manner. Thus, the Message Counter-signature service allows supervising users or release authorities to countersign for an originator without invalidating the original signature.
           </t>
           <t>
-            The MMHS MAY implement this element of service supporting the countersignature attribute as specified in <xref target="RFC5652"/> Section 11.4.
+            The MMHS MAY implement this service supporting the countersignature attribute as specified in <xref target="RFC5652"/> Section 11.4.
           </t>
         </section>
         <section title="Certificate Binding" anchor="Certificate-Binding">
           <t>
-            This element of service allows for a certificate, which is sent with the message to be cryptographically bound to the message.
+            The Certificate Binding security service allows for a certificate, which is sent with the message to be cryptographically bound to the message.
           </t>
           <t>
-            The MMHS MAY implement this element of service supporting the SigningCertificate attribute as specified in <xref target="RFC2634"/> Section 5. The SigningCertificate attribute SHOULD only contain the leaf end-user certificate except where some prior agreement (possibly bilateral) exists to ensure that path validation is not adversely affected.  Differing treatment in <xref target="RFC2634"/> Section 5.3, paragraph 3 avoids impact to path validation if only the leaf certificate is included.
+            The MMHS MAY implement this service supporting the SigningCertificate attribute as specified in <xref target="RFC2634"/> Section 5. The SigningCertificate attribute SHOULD only contain the leaf end-user certificate except where some prior agreement (possibly bilateral) exists to ensure that path validation is not adversely affected.  Differing treatment in <xref target="RFC2634"/> Section 5.3, paragraph 3 avoids impact to path validation if only the leaf certificate is included.
           </t>
         </section>
         <section title="Compressed Data" anchor="Compressed-Data">
           <t>
-            This element of service reduces message size, which helps to protect MMHS availability and may provide an element of robustness in the event of denial of service attacks.
+            The Compressed Data security service reduces message size, which helps to protect MMHS availability and may provide an element of robustness in the event of denial of service attacks.
           </t>
           <t>
-            If the MMHS provides security services it MUST support the Compressed Data element of service.
+            If the MMHS provides security services it MAY support the Compressed Data service.
           </t>
           <t>
-            The MMHS SHOULD include support for the Compressed Data content type on origination as profiled in <xref target="Compressed-Data-CT"/>.
+            The MMHS SHOULD include support for the Compressed Data content type on origination profiled in <xref target="Compressed-Data-CT"/>.
           </t>
           <t>
             Alternatively the MMHS MAY support the application/zlib and application/gzip MIME media types on origination as defined in <xref target="RFC6713"/>.
@@ -2027,16 +2133,19 @@ server respectively.  Line breaks that do not start a new "C:" or
           </t>
         </section>
       </section>
-      <section title="Security Profile">
+      <section title="Security Profile" anchor="Security-Profile">
         <t>
-          This section profiles the use of the S/MIME protocols <xref target="RFC5751"/>, <xref target="RFC5652"/> and <xref target="RFC2634"/> and DKIM protocol <xref target="RFC6376"/> for adding cryptographic services to the MMHS. The relevant sections of <xref target="RFC5751"/>, <xref target="RFC5652"/>, <xref target="RFC2634"/> and <xref target="RFC6376"/> are listed with further clarifications and amendments specific to the implementation of an MMHS conformant with this security profile.
+          This section profiles the use of the S/MIME protocols <xref target="RFC5751"/>, <xref target="RFC5652"/> and <xref target="RFC2634"/> and DKIM protocol <xref target="RFC6376"/> for adding cryptographic services to the MMHS. The relevant sections of <xref target="RFC5751"/>, <xref target="RFC5652"/>, <xref target="RFC2634"/> and <xref target="RFC6376"/> are listed with further clarifications and amendments specific to the implementation of an MMHS conformant with this profile.
         </t>
         <t>
-          This security profile is aligned with the "Profile for the Use of the Cryptographic Message Syntax FO(CMS) and Enhanced Security Services (ESS) for S/MIME", <xref target="STANAG-4631"/>.
+          This security profile is aligned with the "Profile for the Use of the Cryptographic Message Syntax (CMS) and Enhanced Security Services (ESS) for S/MIME", <xref target="STANAG-4631"/>.
+        </t>
+        <t>
+          In order for particpating organisations (or domains) to obtain secure interoperability additional bilateral agreements on the labeling, cryptographic algorithms and Public Key Infrastructure (PKI) needs to be achieved.
         </t>
         <section title="S/MIME Cryptographic Message Syntax Content Types">
           <t>
-            If the MMHS supports the S/MIME protocols for implementing the security elements of services then the MMHS MUST support the Data, SignedData, EnvelopedData, and CompressedData content types as specified in <xref target="RFC5751"/>.
+            If the MMHS supports the S/MIME protocols for implementing the security services then the MMHS MUST support the Data, SignedData, EnvelopedData, and CompressedData content types as specified in <xref target="RFC5751"/>.
           </t>
           <t>
             In accordance with <xref target="RFC5652"/> ContentInfo MUST be supported to encapsulate the outer most SignedData or EnvelopedData content type. Conventions for inner wrappers MUST comply with <xref target="RFC5751"/>.
@@ -2164,31 +2273,37 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="S/MIME Triple Wrapping">
           <t>
-            If the MMHS supports S/MIME protocols for providing the security elements of services (defined in this profile) the MMHS MUST support military messages that are triple wrapped or signed only. A triple wrapped message is one that has been signed, then encrypted, then signed again. The signers of the inner and outer signatures may be different entities or the same entity. If a military message is triple wrapped, the SignedData and EnvelopedData wrappers MUST follow the specifications described in <xref target="Signed-Data-CT"/> and <xref target="Enveloped-Data-CT"/> of this profile, respectively.
+            If the MMHS supports S/MIME protocols for providing the security services (defined in this profile) the MMHS MUST support military messages that are triple wrapped or signed only. A triple wrapped message is one that has been signed, then encrypted, then signed again. The signers of the inner and outer signatures may be different entities or the same entity. If a military message is triple wrapped, the SignedData and EnvelopedData wrappers MUST follow the specifications described in <xref target="Signed-Data-CT"/> and <xref target="Enveloped-Data-CT"/> of this profile, respectively.
+          </t>
+        </section>
+        <section title="Organisation to Organisation Security">
+          <t>
+            The implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.  If the MMHS supports S/MIME protocols for providing the security services (defined in this profile) and the MMHS is providing organisation to organisation security services then the MMHS MUST support MSA-to-MDA S/MIME signing and encryption as specified in [[i-d ref]].
+            <!--////Fix the reference-->
           </t>
         </section>
         <section title="DKIM Digital Signatures" anchor="DKIM-Signatures">
           <t>
-            DKIM defines an organization-level digital signature authentication framework for Internet email, using public key cryptography and using the domain name service as its key server technology. However, it is possible to administer DKIM to support user-level signature granularity. This profile specifies the use of DKIM defined in <xref target="RFC6376"/> for providing an alternative security mechanism to S/MIME to deliver the mandatory security elements of service to the MMHS. However, the implementation of DKIM is dependent upon the security and assurance requirements that are to be met by the MMHS security services. As such, an MMHS MUST implement DKIM (to apply digital signatures for the MMHS message header fields and message body) to meet those security and assurance requirements based on one of the following profiles:
+            DKIM defines an organization-level digital signature authentication framework for Internet email, using public key cryptography and using the domain name service as its key server technology. However, it is possible to administer DKIM to support user-level signature granularity. This profile specifies the use of DKIM defined in <xref target="RFC6376"/> for providing an alternative security mechanism to S/MIME to deliver the Authentication of Origin (<xref target="Authentication-Of-Origin"/>), Non-repudiation of Origin (<xref target="Non-Repudiation-Of-Origin"/>) and Message Integrity (<xref target="Message-Integrity"/>) security services to the MMHS. However, the implementation of DKIM is dependent upon the security and assurance requirements that are to be met by the MMHS security services. An MMHS MAY implement DKIM (to apply digital signatures for the MMHS message header fields and message body) to meet those security and assurance requirements based on one of the following use cases:
           </t>
           <t>
             <list style="numbers">
               <t>
-                Share the organization signing identity (identified by the Signing Domain Identifier (SDID)) private key for signing the MMHS message header fields. The MMHS message header fields are digitally signed by the organization MSA component. This profile does not provide end to end security services. This profile supports organization to organization message integrity, authentication and non-repudiation security services.
+                Share the organization signing identity (identified by the Signing Domain Identifier (SDID)) private key for signing the MMHS message. The MMHS message is digitally signed by the organization MSA component. This profile does not provide end to end security services. This profile supports organization to organization Authentication of Origin, Non-repudiation of Origin and Message Integrity security services.
               </t>
               <t>
-                Share the organization signing identity private key for signing the MMHS message header fields. The email address of the MMHS message originator can be specified as the Agent or User Identifier (AUID). The semantics for performing per-user identity differentiation with this approach MUST be agreed out-of-band and is outside the scope of this profile. The MMHS message header fields are digitally signed by the organization MSA component. This profile does not provide end to end security services. This profile supports organization to organization message integrity, authentication and non-repudiation security services.
+                Share the organization signing identity private key for signing the MMHS message. The email address of the MMHS message originator can be specified as the Agent or User Identifier (AUID). The semantics for performing per-user identity differentiation with this approach MUST be agreed out-of-band and is outside the scope of this MMHS profile. The MMHS message is digitally signed by the organization MSA component. This profile does not provide end to end security services. This profile supports organization to organization Authentication of Origin, Non-repudiation of Origin and Message Integrity security services.
               </t>
               <t>
-                Generate per-user public/private key pairs where the public key is published to distinct subdomains (of the organization domain). The MMHS message is signed with the user's private key and the signing identity is identifiable by the user's subdomain value in the SDID. The MMHS message header fields are digitally signed by the MUA. This profile supports end to end originator authentication, message integrity, and non-repudiation security services.
+                Generate per-user public/private key pairs where the public key is published to distinct subdomains (of the organization domain). The MMHS message is signed with the user's private key and the signing identity is identifiable by the user's subdomain value in the SDID. The MMHS message is digitally signed by the MUA. This profile supports end to end Authentication of Origin, Non-repudiation of Origin and Message Integrity security services.
               </t>
               <t>
-                Generate per-user public/private key pairs where the public key is published to a unique resource record under the organization domain. The MMHS message is signed with the user's private key and the signing identity is identifiable by the domain value in the SDID and the unique resource record identified by the selector value. The MMHS message header fields are digitally signed by the MUA. This profile supports end to end originator authentication, message integrity, and non-repudiation security services.
+                Generate per-user public/private key pairs where the public key is published to a unique resource record under the organization domain. The MMHS message is signed with the user's private key and the signing identity is identifiable by the domain value in the SDID and the unique resource record identified by the selector value. The MMHS message is digitally signed by the MUA. This profile supports end to end Authentication of Origin, Non-repudiation of Origin and Message Integrity security services.
               </t>
             </list>
           </t>
           <t>
-            To provide organization to organization security services: the recipient MUA SHOULD support DKIM digital signature verification or the MUA MUST support the Authentication-Results header field as specified in <xref target="RFC5451"/> according to the security policy; and the organization border MTA or MDA MUST support DKIM digital signature verfication and output the verification results (according to the security policy) to the Authentication-Results header field compliant with <xref target="RFC5451"/>.
+            To provide organization to organization security services: the recipient MUA SHOULD support DKIM digital signature verification or the MUA MUST support the Authentication-Results header field as specified in <xref target="RFC5451"/> according to the security policy; and the organization MTA <!-- MDA?? --> MUST support DKIM digital signature verfication and output the verification results (according to the security policy) to the Authentication-Results header field compliant with <xref target="RFC5451"/>.
           </t>
           <t>
             To provide end to end security services the recipient MUA MUST support DKIM digital signature verification specified in <xref target="RFC6376"/>.
@@ -2211,10 +2326,10 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Message Header Fields">
           <t>
-            By default, <xref target="RFC5751"/> secures MIME message body parts, excluding the message header fields. If the MMHS implements S/MIME security services then the MMHS MUST provide a mechanism for securing the message header fields. <xref target="RFC5751"/> includes a mechanism for protecting the header fields where the whole message is wrapped in a message/rfc822 MIME media type. However, this approach can be problematic for non-S/MIME aware MUAs and does not provide a mechanism for signing a subset of message header fields.
+            By default, <xref target="RFC5751"/> secures MIME message body parts, excluding the message header fields. If the MMHS implements S/MIME security services then the MMHS SHOULD provide a mechanism for securing the message header fields. <xref target="RFC5751"/> includes a mechanism for protecting the header fields where the whole message is wrapped in a message/rfc822 MIME media type. However, this approach can be problematic for non-S/MIME aware MUAs and does not provide a mechanism for signing a subset of message header fields.
           </t>
           <t>
-          If the MMHS provides security services this profile requires that the MMHS MUST support DomainKeys Identified Mail (DKIM) Signatures profiled in <xref target="DKIM-Signatures"/> for digitally signing the MMHS message header fields.
+          If the MMHS provides security services this profile requires that the MMHS SHOULD support DomainKeys Identified Mail (DKIM) Signatures profiled in <xref target="DKIM-Signatures"/> for digitally signing the MMHS message header fields.
           </t>
           <t>
             The MMHS MUST include at least the following header fields to be signed:
@@ -2237,6 +2352,12 @@ server respectively.  Line breaks that do not start a new "C:" or
                   To, Cc, Bcc (if present)
                 </t>
                 <t>
+                  Received
+                </t>
+                <t>
+                  Sender
+                </t>
+                <t>
                   Expires
                 </t>
                 <t>
@@ -2246,8 +2367,10 @@ server respectively.  Line breaks that do not start a new "C:" or
                   SIO-Label (if present)
                 </t>
                 <t>
-		<!--////Alexey: what about Message Instructions, Handling Instructions and SICs?-->
-                  MMHS-Primary-Precedence (if present), MMHS-Copy-Precedence (if present), MMHS-Message-Type, MMHS-Extended-Authorisation-Info
+                  MMHS-Primary-Precedence (if present), MMHS-Copy-Precedence (if present), MMHS-Message-Type, MMHS-Extended-Authorisation-Info, MMHS-Authorizing-Users (if present)
+                </t>
+                <t>
+                  MT-Priority
                 </t>
               </list>
             </t>
@@ -2258,7 +2381,7 @@ server respectively.  Line breaks that do not start a new "C:" or
       </section>
     </section>
 
-    <section title="Requirements on Mail User Agents">
+    <section title="Requirements on Mail User Agents" anchor="mua-reqs">
 
       <section title="Standards Compliance">
         <t>
@@ -2390,7 +2513,7 @@ Do requirements on the sending side differs from requirements on the generating 
     
 <!--////Keep in sync with the MSA's section-->
     
-    <section title="Requirements on Mail Transfer Agents">
+    <section title="Requirements on Mail Transfer Agents" anchor="mta-reqs">
 
       <section title="Standards Compliance">
         
@@ -2519,12 +2642,10 @@ Do requirements on the sending side differs from requirements on the generating 
       <?rfc include="reference.RFC.2156"?> <!-- MIXER -->
       <?rfc include="reference.RFC.6376"?> <!-- DKIM -->
 
-
       <reference anchor="ACP123">
         <front>
           <title>Common Messaging Strategy and Procedures</title>
           <!--CCEB == COMBINED COMMUNICATIONS-ELECTRONICS BOARD-->
-    <!--////Try using fullname=CCEB instead?-->
           <author surname="CCEB">
             <!--
 			<organization></organization>
@@ -2540,8 +2661,10 @@ Do requirements on the sending side differs from requirements on the generating 
 
     <references title="Informative References">
 
-      <?rfc include="reference.RFC.5598"?> <!-- Internet Mail Architecture -->
+      <?rfc include="reference.RFC.5598"?>
       
+      <?rfc include="reference.RFC.3501"?> <!-- IMAP -->
+
       <reference anchor="STANAG-4406">
         <front>
           <title>STANAG 4406 Edition 2: Military Message Handling System</title>
@@ -2554,7 +2677,7 @@ Do requirements on the sending side differs from requirements on the generating 
 
       <reference anchor="STANAG-4631">
         <front>
-          <title>STANAG 4631 Edition 1: Profile for the Use of the Cryptographic Message Syntax FO(CMS) and Enhanced Security Services (ESS) for S/MIME</title>
+          <title>STANAG 4631 Edition 1: Profile for the Use of the Cryptographic Message Syntax (CMS) and Enhanced Security Services (ESS) for S/MIME</title>
           <author surname="NATO">
           </author>
           <date month="June" year="2008"/>

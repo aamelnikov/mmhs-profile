@@ -1417,7 +1417,7 @@ server respectively.  Line breaks that do not start a new "C:" or
           </t>
           <t>
             Note that the Content Type Indication element of service is not supported by the MIME Content-Type header field  defined in <xref target="RFC2045"/>, even though they have a similar name. 
-            The MIME Content-Type header field is is to describe only the data contained in the body of the message, and not the whole message itself.
+            The MIME Content-Type header field is to describe only the data contained in the body of the message, and not the whole message itself.
           </t>
         </section>
         <section title="Converted Indication" anchor="Converted-Indication">
@@ -1870,7 +1870,7 @@ server respectively.  Line breaks that do not start a new "C:" or
           <t>
 <!--////Sieve can be used for this.
 Also update the table if we are not going to reference Sieve.-->
-            There is currently no SMTP service that supports this element of service. Therefore the Redirection of Incoming Messages element of service is not supported by this profile. However, note that some MTA and/or MDA products might be able to enforce a local security policy supporting this element of service with proprietary mechanisms.
+            There is currently no SMTP service that supports this element of service. Therefore the Redirection of Incoming Messages element of service is not supported by this profile. However, note that some MTA and/or MDA products are able to enforce a local security policy supporting this element of service with proprietary mechanisms.
           </t>
         </section>
         <section title="Reply Request Indication" anchor="Reply-Request-Indication">
@@ -1916,7 +1916,7 @@ Also update the table if we are not going to reference Sieve.-->
           <t>
             This element of service enables an origintaing MUA to specify, on a per-recipient basis, a Distribution List in place of all the individual recipients (users or nested DLs). 
             The MTA will add the member of the list to the recipients and send it to those members. Support for this service shall be optional.
-            Determination of where in the MMHS the DL expansion takes place may be the subject of natio policy based upon security requirements. 
+            Determination of where in the MMHS the DL expansion takes place may be the subject of national policy based upon security requirements. 
             National policy may also dictate the preferential support of the <xref target="Use-Of-Address-List">Use of Address List</xref> and <xref target="Exempted-Addresses">Exempted Addsresses</xref>Elements of Service instead of the Use of Distribution List Element of Service.
           </t>
           <t>
@@ -2167,7 +2167,7 @@ Also update the table if we are not going to reference Sieve.-->
           This security profile is aligned with the "Profile for the Use of the Cryptographic Message Syntax (CMS) and Enhanced Security Services (ESS) for S/MIME", <xref target="STANAG-4631"/>.
         </t>
         <t>
-          In order for participating organisations (or domains) to obtain secure interoperability additional bilateral agreements on the labeling, cryptographic algorithms and Public Key Infrastructure (PKI) needs to be achieved.
+          In order for participating organisations (or domains) to obtain secure interoperability additional bilateral agreements on the labeling, cryptographic algorithms and Public Key Infrastructure (PKI) need to be achieved.
         </t>
         <section title="S/MIME Cryptographic Message Syntax Content Types">
           <t>
@@ -2329,7 +2329,7 @@ Also update the table if we are not going to reference Sieve.-->
           </t>
           <t>
 <!--////Change the SHOULD to MUST? ("MUST support one and/or another")-->
-            To provide organization to organization security services: the recipient MUA SHOULD support DKIM digital signature verification or the MUA MUST support the Authentication-Results header field as specified in <xref target="RFC5451"/> according to the security policy; and the organization MTA <!-- MDA?? --> MUST support DKIM digital signature verfication and output the verification results (according to the security policy) to the Authentication-Results header field compliant with <xref target="RFC5451"/>.
+            To provide organization to organization security services: the recipient MUA SHOULD support DKIM digital signature verification or the MUA MUST support the Authentication-Results header field as specified in <xref target="RFC5451"/> according to the security policy; and the organization MTA <!-- MDA?? --> MUST support DKIM digital signature verification and output the verification results (according to the security policy) to the Authentication-Results header field compliant with <xref target="RFC5451"/>.
           </t>
           <t>
             To provide end to end security services the recipient MUA MUST support DKIM digital signature verification specified in <xref target="RFC6376"/>.

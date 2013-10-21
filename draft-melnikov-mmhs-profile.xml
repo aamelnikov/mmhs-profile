@@ -1538,7 +1538,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             This element of service allows the originator to indicate to the recipient the names or one or more persons who authorized the sending of the messages.
           </t>
           <t>
-            The Authorizing Users Indication element of service MUST be conformant with the Draft and Release using Internet Email specification [[id-ref]]. In addition, the Sender header field as defined in <xref target="RFC5322"/> (carrying the Originator Indication) MUST also be present in accordance with <xref target="RFC2156"/>. 
+            The Authorizing Users Indication element of service MUST be conformant with the Draft and Release using Internet Email specification <xref target="I-D.melnikov-mmhs-authorizing-users"/>. In addition, the Sender header field as defined in <xref target="RFC5322"/> (carrying the Originator Indication) MUST also be present in accordance with <xref target="RFC2156"/>. 
           </t>
         </section>
         <section title="Auto-forwarded Indication" anchor="Auto-Forwarded-Indication">
@@ -1789,7 +1789,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         <section title="Originator Indication" anchor="Originator-Indication">
           
           <t>
-            The Originator Indication MUST use the MMHS-Authorizing-Users header field, as defined in [[id-ref]], when the Authorizing Users Indication is present in the message and the Sender header field, as defined in <xref target="RFC5322"/>, when the Authorising Users Indication is not present in the message.
+            The Originator Indication MUST use the MMHS-Authorizing-Users header field, as defined in <xref target="I-D.melnikov-mmhs-authorizing-users"/>, when the Authorizing Users Indication is present in the message and the Sender header field, as defined in <xref target="RFC5322"/>, when the Authorising Users Indication is not present in the message.
           </t>
           <t>
             This conditional use of different header fields is required to support interoperability with <xref target="ACP123"/> and <xref target="STANAG-4406"/> X.400 systems that utilise a MIXER compliant gateway, <xref target="RFC2156"/>.
@@ -2275,7 +2275,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Organisation to Organisation Security">
           <t>
-            The implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.  If the MMHS supports S/MIME protocols for providing the security services (defined in this profile) and the MMHS is providing organisation to organisation security services then the MMHS MUST support MSA-to-MDA S/MIME signing and encryption as specified in [[i-d ref]].
+            The implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.  If the MMHS supports S/MIME protocols for providing the security services (defined in this profile) and the MMHS is providing organisation to organisation security services then the MMHS MUST support MSA-to-MDA S/MIME signing and encryption as specified in <xref target="I-D.melnikov-smime-msa-to-mda"/>.
             <!--////Fix the reference-->
           </t>
         </section>
@@ -2651,12 +2651,53 @@ Do requirements on the sending side differs from requirements on the generating 
         <seriesInfo name="ACP" value="123"/>
         <format target="http://jcs.dtic.mil/j6/cceb/acps/acp123" type="HTML"/>
       </reference>
+
+<reference anchor='I-D.melnikov-mmhs-authorizing-users'>
+<front>
+<title>Draft and Release using Internet Email</title>
+
+<author initials='A' surname='Melnikov' fullname='Alexey Melnikov'>
+    <organization />
+</author>
+
+<date month='October' day='18' year='2013' />
+
+<abstract><t>This document describes a procedure for when an Military Message Handling System (MMHS) message is composed by one user and is only released to the mail transfer system when one or more authorizing users authorize release of the message by adding the MMHS- Authorizing-Users header field.  The resulting message can be optionally countersigned, allowing recipients to verify both the original signature (if any) and countersignatures.</t></abstract>
+
+</front>
+
+<seriesInfo name='Internet-Draft' value='draft-melnikov-mmhs-authorizing-users-03' />
+<format type='TXT'
+        target='http://www.ietf.org/internet-drafts/draft-melnikov-mmhs-authorizing-users-03.txt' />
+</reference>
+
+
+<reference anchor='I-D.melnikov-smime-msa-to-mda'>
+<front>
+<title>MSA-to-MDA S/MIME signing &amp; encryption</title>
+
+<author initials='A' surname='Melnikov' fullname='Alexey Melnikov'>
+    <organization />
+</author>
+
+<date month='October' day='14' year='2013' />
+
+<abstract><t>This document specifies how S/MIME signing and encryption can be applied between a Message Submission Agent (MSA) and a Message Delivery Agent (MDA) or between 2 Message Transfer Agents (MTA).</t></abstract>
+
+</front>
+
+<seriesInfo name='Internet-Draft' value='draft-melnikov-smime-msa-to-mda-00' />
+<format type='TXT'
+        target='http://www.ietf.org/internet-drafts/draft-melnikov-smime-msa-to-mda-00.txt' />
+</reference>
+
+
       
     </references>
 
     <references title="Informative References">
 
-      <?rfc include="reference.RFC.5598"?>
+      <?rfc include="reference.RFC.5598"?>  <!-- Internet Mail Architecture -->
       
       <?rfc include="reference.RFC.3501"?> <!-- IMAP -->
 

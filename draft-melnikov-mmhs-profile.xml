@@ -1400,6 +1400,13 @@ server respectively.  Line breaks that do not start a new "C:" or
           <t>
             Strong authentication in the bind operation is mandatory. Strong authentication MUST be supported using SMTP Extension for Authentication <xref target="RFC4954"/> and SMTP Extension for Secure SMTP over TLS <xref target="RFC3207"/>.
           </t>
+          <t>
+            While the list of recommended authentication mechanisms used with SMTP Extension for Authentication would depend on operating environment
+            and would change over time, some recommendations are provided here.
+            For environment using X.509 certificates, use of SASL EXTERNAL <xref target="RFC4422"/> authentication mechanism is RECOMMENDED.
+            For environment using Kerberos, use of SASL GSSAPI <xref target="RFC4752"/> authentication mechanism is RECOMMENDED.
+            Support for SCRAM <xref target="RFC5802"/> is RECOMMENDED for environment using password based authentication.
+          </t>
         </section>
         <section title="Content Type Indication" anchor="Content-Type-Indication">
           <t>
@@ -2657,6 +2664,10 @@ Do requirements on the sending side differs from requirements on the generating 
 
       <?rfc include="reference.RFC.2156"?> <!-- MIXER -->
       <?rfc include="reference.RFC.6376"?> <!-- DKIM -->
+
+      <?rfc include="reference.RFC.4422"?> <!-- SASL and SASL EXTERNAL -->
+      <?rfc include="reference.RFC.4752"?> <!-- SASL GSSAPI -->
+      <?rfc include="reference.RFC.5802"?> <!-- SASL SCRAM -->
 
       <reference anchor="ACP123">
         <front>

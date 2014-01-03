@@ -376,10 +376,10 @@ server respectively.  Line breaks that do not start a new "C:" or
             MUST
           </c>
           <c>
-            <xref target="RFC5322"/>, 3.6.2
+            <xref target="I-D.melnikov-mmhs-authorizing-users"/>
           </c>
           <c>
-            From
+            MMHS-Authorizing-Users
           </c>
           <c>
             <xref target="Auto-Forwarded-Indication">Auto-forwarded Indication</xref>
@@ -1519,6 +1519,7 @@ server respectively.  Line breaks that do not start a new "C:" or
           </t>
           <t>
             There is no current SMTP service that supports allows the originator to disallow the redirection of a message to an alternate recipient. Therefore this profile does not support the Alternate Recipient Allowed element of service.
+<!--////-->
             [[ We could refer to MIXER field to allow control within X.400 domains, even though not supported within SMTP domains?]]
           </t>
         </section>
@@ -1561,7 +1562,8 @@ server respectively.  Line breaks that do not start a new "C:" or
             This element of service allows the originator to indicate to the recipient that a particular body of the message has been sent encrypted.
           </t>
           <t>
-            There is no current SMTP service that supports allows the  Body Part Encryption Indication element of service. Therefore this profile does not support the Body Part Encryption Indication element of service.
+            There is no current SMTP service that supports allows the Body Part Encryption Indication element of service. Therefore this profile does not support the Body Part Encryption Indication element of service.
+<!--////-->
             [[Refer to whole message encryption options]].
           </t>
         </section>
@@ -1708,6 +1710,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             There is no current SMTP service that supports the Hold for Delivery element of service. Therefore this profile does not support this element of service.
           </t>
           <t>
+<!--////Additionally, an IMAP mailbox can be used for holding messages pending submission-->
             However, this element of service MAY be partially supported by MTA products that provide proprietary mechanisms to schedule delivery times based on MMHS message size and MMHS message priority.
           </t>
         </section>
@@ -1935,11 +1938,13 @@ Also update the table if we are not going to reference Sieve.-->
         </section>
         <section title="Extended Authorization Info" anchor="Extended-Authorization-Info">
           <t>
+<!--////This is listed as MAY in the table-->
             The MMHS-Extended-Authorisation-Info header field defined in <xref target="RFC6477"/> MUST be supported by the MMHS.
           </t>
         </section>
         <section title="Distribution Code" anchor="Distribution-Code">
           <t>
+<!--////This is listed as MAY in the table-->
             The MMHS-Subject-Indicator-Codes header field defined in <xref target="RFC6477"/> MUST be supported by the MMHS.
           </t>
         </section>

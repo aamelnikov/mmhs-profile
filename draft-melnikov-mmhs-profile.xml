@@ -7,7 +7,7 @@
 <?rfc comments="yes" ?>
 <?rfc inline="yes" ?>
 
-<rfc ipr="trust200902" category="info" docName='draft-melnikov-mmhs-profile-05'>
+<rfc ipr="trust200902" category="info" docName='draft-melnikov-mmhs-profile-06'>
   <front>
     <title abbrev="MMHS over SMTP">
       Military Message Handling System (MMHS) over SMTP
@@ -53,7 +53,7 @@
       </address>
     </author>
 
-    <date year="2013"/>
+    <date year="2014"/>
     
     <keyword>MMHS</keyword>
     <keyword>SMTP</keyword>
@@ -67,7 +67,7 @@
         strategic and tactical networks.  The MMHS Elements of Service are defined as
         a set of extensions to the ITU-T X.400 (1992) international standards and are specified
         in STANAG 4406 Edition 2 or ACP 123.  This document specifies how a comparable
-        messaging service can be provided using SMTP and its extensions.
+        messaging service can be provided using Internet Electronic Mail, SMTP and their extensions.
       </t>
     </abstract>
     
@@ -170,7 +170,7 @@ server respectively.  Line breaks that do not start a new "C:" or
           <ttcol align="left">ACP123 Reference</ttcol>
           <ttcol align="left">Support</ttcol>
           <ttcol align="left">SMTP Standard</ttcol>
-          <ttcol align="left" width="20%">Header Field/Parameter</ttcol>
+          <ttcol align="left" width="20%">Header Field or SMTP Parameter</ttcol>
           <c>
             <xref target="Access-Management">Access Management</xref>
           </c>
@@ -181,7 +181,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             MUST
           </c>
           <c>
-            N/A
+            <xref target="RFC4954"/>, <xref target="RFC3207"/>
           </c>
           <c>
             N/A
@@ -394,7 +394,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             <xref target="RFC2156"/>, 2.3.1.2
           </c>
           <c>
-            Auto-forwarded
+            Autoforwarded
           </c>
           <c>
             <xref target="Blind-Copy-Recipient-Indication">Blind Copy Recipient Indication</xref>
@@ -1084,7 +1084,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             <xref target="RFC6477"/>, 3.7
           </c>
           <c>
-            MMHS-Originator-Address
+            MMHS-Originator-Reference
           </c>
           <c>
             <xref target="Use-Of-Address-List">Use of Address List</xref>
@@ -1138,13 +1138,13 @@ server respectively.  Line breaks that do not start a new "C:" or
             213c
           </c>
           <c>
-            TBD
+            N/A
           </c>
           <c>
-            approriate MIME type?
+            N/A
           </c>
           <c>
-            TBD
+            N/A
           </c>
           <c>
             <xref target="ACP-127-Message-Identifier">ACP 127 Message Identifier</xref>
@@ -1454,9 +1454,6 @@ server respectively.  Line breaks that do not start a new "C:" or
           <t>
             Non-Delivery notifications MUST be generated in accordance with <xref target="RFC3461"/>.
           </t>
-          <t>
-            Note that non-delivery notifications are requested on a per message basis in this profile, and not on a per recipient basis as defined in <xref target="ACP123"/>.
-          </t>
         </section>
         <section title="Original Encoded Information Types" anchor="Original-Encoded-Information-Types">
           <t>
@@ -1597,7 +1594,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             This element of service enables an originating Mail User Agent to instruct the Mail Transfer Agent that a military message being submitted shall be delivered no sooner than a specified date and time. When tis service is requested, it MUST be logged for audit and tracing purposes.
           </t>
           <t>
-            Deferred Delivery MUST be specified in accordance with <xref target="RFC4865" />
+            Deferred Delivery MUST be specified in accordance with <xref target="RFC4865"/>.
           </t>
         </section>
         <section title="Deferred Delivery Cancellation" anchor="Deferred-Delivery-Cancellation">
@@ -1610,7 +1607,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Delivery Notification" anchor="Delivery-Notification">
           <t>
-            This element of service enables the originating MUA to request that the originating MUA be explicitly notified when a submitted military message has been successfully delivered to a recipient MUA. This notification is convered by a delivery report. The delivery report is related to the submitted mesages by means of a message identifier and includes the date and time of delivery. Receipt of a delivery report at the originating MUA results in the the generation of a delivery notification to the originator. In the case of multi-destination military messages, this service shall be selectable on a per recipient basis. 
+            This element of service enables the originating MUA to request that the originating MUA be explicitly notified when a submitted military message has been successfully delivered to a recipient MUA. This notification is conveyed by a delivery report. The delivery report is related to the submitted message by means of a message identifier and includes the date and time of delivery. Receipt of a delivery report at the originating MUA results in the the generation of a delivery notification to the originator. In the case of multi-destination military messages, this service shall be selectable on a per recipient basis.
             </t>
           <t>
             This element of service MUST be supported using the NOTIFY parameter of the ESMTP RCPT command with as value of SUCCESS, as defined in <xref target="RFC3461"/>.
@@ -1632,7 +1629,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Disclosure of Other Recipients" anchor="Disclosure-of-Other">
           <t>
-            This element of service enables the originating MTA to instruct the MTS to disclose the address of all oter recipient of a multi-recipient military message to each recipient MUA, upon delivery of the message. The addresses disclosed are as supplied by the originating MUA or the results of address list expansion.
+            This element of service enables the originating MTA to instruct the MTS to disclose the address of all other recipient of a multi-recipient military message to each recipient MUA, upon delivery of the message. The addresses disclosed are as supplied by the originating MUA or the results of address list expansion.
           </t>
           <t>
             Disclosure of Other Recipients is not supported by this profile.
@@ -1651,18 +1648,20 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="DL Expansion Prohibited" anchor="DL-Expansion-Prohibited">
           <t>
-            This element of service allows an originating user to specify that if any of the recipient names can directly, or be reassignment, refer to a distribution, then no expansion of the distribution shall occur. Instead, a non-delivery notification shall be returned to the originating Mail User Agent. 
+            This element of service allows an originating user to specify that if any of the recipient names can directly, or by reassignment, refer to a distribution, then no expansion of the distribution shall occur. Instead, a non-delivery notification shall be returned to the originating Mail User Agent.
           </t>
           <t>
-            [[What are we going to do here?]]
+            DL Expansion Prohibited is not supported by this profile.
           </t>
         </section>
         <section title="Expiry Date Indication" anchor="Expiry-Date-Indication">
           <t>
             This element of service allows the originator to indicate to the recipient the date and time after which the message is considered invalid. The intent of this element of service is to state the originator's assessment of the current applicability of a message. If the Expiry Date Indication is present, it shall be displayed to the recipients(s) to indicate the time after which this message should be longer be acted upon. It is left to the discretion of the recipient as to whether or not the message is discarded. 
           </t>
+<!--DELIVERBY SMTP extension is used to satisfy another requirement.-->
+<!--////Why "if supported by the MMHS"?-->
           <t>
-            The Expiry Date Indication element of service, if supported by the MMHS, SHALL use the Expires header field, as defined in <xref target="RFC2156"/>
+            The Expiry Date Indication element of service, if supported by the MMHS, SHALL use the Expires header field, as defined in <xref target="RFC2156"/>.
           </t>
         </section>
         <section title="Explicit Conversion" anchor="Explicit-Conversion">
@@ -1675,10 +1674,10 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Forwarded MM Indication" anchor="Forwarded-MM-Indication">
           <t>
-            This element of service allows a message, plus its delivery information to be sent as a body part inside another message. In a multi-part body the forwarded message may be one of serveral body parts of various types. 
+            This element of service allows a message, plus its delivery information to be sent as a body part inside another message. In a multi-part body the forwarded message may be one of serveral body parts of various types.
           </t>
           <t>
-            The Forwarded MM Indication element of service, if supported by the MMHS, SHALL use the Content Type header field, as defined in <xref target="RFC2045"/> with the value "message/rfc822" and use the Content Type Indication, as defined in <xref target="Content-Type-Indication"/>, within the headers of the embedded message.
+            The Forwarded MM Indication element of service, if supported by the MMHS, SHALL use the Content-Type header field, as defined in <xref target="RFC2045"/> with the value "message/rfc822" and use the Content Type Indication, as defined in <xref target="Content-Type-Indication"/>, within the headers of the embedded message.
           </t>
         </section>
         <section title="Grade of Delivery Selection" anchor="Grade-Of-Delivery-Selection">
@@ -1689,16 +1688,16 @@ server respectively.  Line breaks that do not start a new "C:" or
             The Grade of Delivery Selection element of service MUST be supported by the MMHS, using the MT-Priority header field, as defined in <xref target="RFC6758"/>.
           </t>
           <t>
-            The Grade of Delivery Selection MT-Priority header field value MUST be derived from the Primary Precedence (<xref target="Primary-Precedence"/>) MMHS-Primary-Precedence header field value.
+            The Grade of Delivery Selection MT-Priority header field value MUST be derived from the Primary Precedence (<xref target="Primary-Precedence"/>) MMHS-Primary-Precedence <xref target="RFC6477"/> header field value.
           </t>
           <t>
-            The MMHS message may have no primary recipients (therefore no Primary Precedence); the Grade of Delivery Selection MT-Priority header field value MUST be derived from the Copy Precedence (<xref target="Copy-Precedence"/>) MMHS-Copy-Precedence header field value.
+            The MMHS message may have no primary recipients (therefore no Primary Precedence); the Grade of Delivery Selection MT-Priority header field value MUST be derived from the Copy Precedence (<xref target="Copy-Precedence"/>) MMHS-Copy-Precedence <xref target="RFC6477"/> header field value.
           </t>
           <t>
             The mapping between the Grade of Delivery Selection MT-Priority header field values and the Primary Precedence MMHS-Primary-Precedence header field values (and subsequently the Copy Precedence MMHS-Copy-Precedence header field values) MUST support the "STANAG4406" Priority Assignment Policy specified in <xref target="RFC6758"/> Appendix A.
           </t>
           <t>
-            The Grade of Delivery Selection MT-Priority MUST not be displayed to the recipient by the MUA. An indication of the Grade of Delivery selection element of service is provided to the recipient MUA by the Primary and Copy Precedence.  
+            The Grade of Delivery Selection MT-Priority doesn't have to be displayed to the recipient by the MUA, as an indication of the Grade of Delivery selection element of service is provided to the recipient MUA by the Primary and Copy Precedence.
           </t>
         </section>
         <section title="Hold for Delivery" anchor="Hold-For-Delivery">
@@ -1735,7 +1734,6 @@ server respectively.  Line breaks that do not start a new "C:" or
           <t>
             The Latest Delivery Designation element of service MUST be supported by the MMHS as defined in the Deliver By SMTP extension <xref target="RFC2852"/>.
           </t>
-
         </section>
         <section title="Multi-destination Delivery" anchor="Multi-Destination-Delivery">
           <t>
@@ -1789,7 +1787,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         <section title="Originator Indication" anchor="Originator-Indication">
           
           <t>
-            The Originator Indication MUST use the MMHS-Authorizing-Users header field, as defined in <xref target="I-D.melnikov-mmhs-authorizing-users"/>, when the Authorizing Users Indication is present in the message and the Sender header field, as defined in <xref target="RFC5322"/>, when the Authorising Users Indication is not present in the message.
+            The Originator Indication MUST use the MMHS-Authorizing-Users header field, as defined in <xref target="I-D.melnikov-mmhs-authorizing-users"/>, when the Authorizing Users Indication is present in the message and the Sender header field, as defined in <xref target="RFC5322"/>, when the Authorizing Users Indication is not present in the message.
           </t>
           <t>
             This conditional use of different header fields is required to support interoperability with <xref target="ACP123"/> and <xref target="STANAG-4406"/> X.400 systems that utilise a MIXER compliant gateway, <xref target="RFC2156"/>.
@@ -1831,7 +1829,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             The Receipt Notification Request Indication MUST be supported by the MMHS, using the Disposition-Notification-To header field as defined in <xref target="RFC3798"/>.
           </t>
           <t>
-            In the case where the Receipt Notification Request Indication element of service is required for a subset of the recipients the MSA MUST: submit a MMHS message to those recipients that a receipt notification is requested with a Disposition-Notification-To header field; and, submit a MMHS message(s) to those recipients that a receipt notification is not requested without a Disposition-Notification-To header field.
+            In the case where the Receipt Notification Request Indication element of service is required for a subset of the recipients the MUA MUST: submit a MMHS message to those recipients that a receipt notification is requested with a Disposition-Notification-To header field; and, submit a MMHS message(s) to those recipients that a receipt notification is not requested without a Disposition-Notification-To header field.
           </t>
           <t>
             Note that while this element of service is selectable on a per recipient basis, an MUA MAY only allow it to be selected on a per message basis.
@@ -1856,7 +1854,9 @@ server respectively.  Line breaks that do not start a new "C:" or
             This element of service enables a MUA to instruct the MTA to redirect incoming MMHS messages addressed to it, to another MUA or to an Address List (AL), for a specified period of time, or until revoked.
           </t>
           <t>
-            There is currently no SMTP service that supports this element of service. Therefore the Redirection of Incoming Messages element of service is not supported by this profile. However, note that some MTA <!-- MDA --> products MAY be able to enforce a local security policy supporting this element of service with proprietary mechanisms.
+<!--////Sieve can be used for this.
+Also update the table if we are not going to reference Sieve.-->
+            There is currently no SMTP service that supports this element of service. Therefore the Redirection of Incoming Messages element of service is not supported by this profile. However, note that some MTA and/or MDA products might be able to enforce a local security policy supporting this element of service with proprietary mechanisms.
           </t>
         </section>
         <section title="Reply Request Indication" anchor="Reply-Request-Indication">
@@ -1895,11 +1895,18 @@ server respectively.  Line breaks that do not start a new "C:" or
             This element of service allows the originator to indicate to the recipient(s) a user specified short description of the message.
           </t>
           <t>
+<!--////This is listed as MAY in the table. Is that a problem?-->
             The Subject Indication element of service MUST be supported by the MMHS, using the Subject header field as defined in <xref target="RFC5322"/>.
           </t>
         </section>
         <section title="Use of Distribution List" anchor="Use-Of-Distribution-List">
 
+          <t>
+<!--////Add description-->
+          </t>
+          <t>
+            Use of Distribution List is not supported by this profile.
+          </t>
         </section>
       </section>
       <section title="Military Elements of Service" anchor="Military-Elements-of-Service">
@@ -1971,7 +1978,8 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Corrections" anchor="Corrections">
           <t>
-            The Corrections element of service MAY be supported by this profile. [[Define new MIME type?]]
+            <!--////A new MIME type or a Content-Type parameter to text/plain can be defined in the future, if needed.-->
+            The Corrections element of service is not supported by this profile.
           </t>
         </section>
         <section title="ACP 127 Message Identifier" anchor="ACP-127-Message-Identifier">
@@ -2276,7 +2284,6 @@ server respectively.  Line breaks that do not start a new "C:" or
         <section title="Organisation to Organisation Security">
           <t>
             The implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.  If the MMHS supports S/MIME protocols for providing the security services (defined in this profile) and the MMHS is providing organisation to organisation security services then the MMHS MUST support MSA-to-MDA S/MIME signing and encryption as specified in <xref target="I-D.melnikov-smime-msa-to-mda"/>.
-            <!--////Fix the reference-->
           </t>
         </section>
         <section title="DKIM Digital Signatures" anchor="DKIM-Signatures">
@@ -2314,8 +2321,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             If the MMHS supports S/MIME protocols for implementing security services then the MMHS MUST support on origination the ESSSecurityLabel specified in Section 3 of <xref target="RFC2634"/>. The MMHS MUST support the security-policy-identifier, security-classification, privacy-mark and security-categories attributes of the ESSSecurityLabel. The MMHS MAY support the Equivalent Security Labels EquivalentLabels as specified in <xref target="RFC2634"/> Section 3.4.
           </t>
           <t>
-            <!--////Fix the reference-->
-            An MMHS MAY on origination support the SIO-Label header field as specified in [[i-d ref]].
+            An MMHS MAY on origination support the SIO-Label header field as specified in <xref target="I-D.zeilenga-email-seclabel"/>.
           </t>
           <t>
             On reception the MMHS MUST support the ESSSecurityLabel and SIO-Label. In the case where a military message contains a SIO-Label and an ESSSecurityLabel the MMHS MUST assert that the policy conveyed in both are the same and that the sensitivity, compartments, and other handling caveats that can be conveyed in both are the same.
@@ -2691,7 +2697,25 @@ Do requirements on the sending side differs from requirements on the generating 
         target='http://www.ietf.org/internet-drafts/draft-melnikov-smime-msa-to-mda-00.txt' />
 </reference>
 
-
+      <reference anchor="I-D.zeilenga-email-seclabel">
+        <front>
+          <title>Security Labels in Internet Email</title>
+          <author initials="K" surname="Zeilenga" fullname="Kurt Zeilenga">
+            <organization/>
+          </author>
+          <author initials="A" surname="Melnikov" fullname="Alexey Melnikov">
+            <organization/>
+          </author>
+          <date month="December" day="1" year="2013"/>
+          <abstract>
+            <t>
+              This document describes a header field, SIO-Label, for use in Internet Mail to convey the sensitivity of the message. This header field which may carry a textual representation (a display marking) and/or a structural representation (a security label) of the sensitivity of the message. This document also describes a header field, SIO-Label-History, for recording changes in the message's label.
+            </t>
+          </abstract>
+        </front>
+        <seriesInfo name="Internet-Draft" value="draft-zeilenga-email-seclabel-07"/>
+        <format type="TXT" target="http://www.ietf.org/internet-drafts/draft-zeilenga-email-seclabel-07.txt"/>
+      </reference>
       
     </references>
 

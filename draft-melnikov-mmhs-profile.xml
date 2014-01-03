@@ -1051,7 +1051,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             MAY
           </c>
           <c>
-            <xref target="RFC2634"/>, 3
+            <xref target="RFC2634"/>, 3 and <xref target="I-D.zeilenga-email-seclabel"/>
           </c>
           <c>
             eSSSecurityLabel, SIO-Label
@@ -1306,10 +1306,10 @@ server respectively.  Line breaks that do not start a new "C:" or
             MUST
           </c>
           <c>
-            <xref target="RFC2634"/>, 3
+            <xref target="RFC2634"/>, 3 and <xref target="I-D.zeilenga-email-seclabel"/>
           </c>
           <c>
-            ESSSecurityLabel
+            ESSSecurityLabel, SIO-Label
           </c>
           <c>
             <xref target="Non-Repudiation-Of-Receipt">Non-repudiation of Receipt</xref>
@@ -2035,12 +2035,12 @@ Also update the table if we are not going to reference Sieve.-->
             Alternatively the MMHS MAY implement this service on origination supporting DKIM (profiled in <xref target="DKIM-Signatures"/>) to apply a digital signature to a MMHS message.
           </t>
           <t>
-            On reception the MMHS MUST support S/MIME and DKIM digital signatures.
+            On reception the MMHS MUST support verification of S/MIME and DKIM digital signatures.
           </t>
         </section>
         <section title="Non-repudiation of Origin" anchor="Non-Repudiation-Of-Origin">
           <t>
-            The Non-repudiation of Origin security service provides the recipient with evidence that demonstrates, to a third-party, who originated the message, and will protect against any attempt by the message originator to falsely deny having sent the message. However, it must be noted that the implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.
+            The Non-repudiation of Origin security service provides the recipient with evidence that demonstrates, to a third-party, who originated the message, and will protect against any attempt by the message originator to falsely deny having sent the message. However, it must be noted that the implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization (or domain) the user belongs to.
           </t>
           <t>
             If the MMHS provides security services it MUST support the Non-repudiation of Origin service.
@@ -2052,12 +2052,12 @@ Also update the table if we are not going to reference Sieve.-->
             Alternatively the MMHS MAY implement this service on origination supporting DKIM (profiled in <xref target="DKIM-Signatures"/>) to apply a digital signature to a MMHS message.
           </t>
           <t>
-            On reception the MMHS MUST support S/MIME and DKIM digital signatures.
+            On reception the MMHS MUST support verification of S/MIME and DKIM digital signatures.
           </t>
         </section>
         <section title="Message Integrity" anchor="Message-Integrity">
           <t>
-            The Message Integrity security service provides a method of ensuring the content that was received by the recipient(s) is the same as that which was sent by the originator. However, it must be noted that the implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization the user belongs to.
+            The Message Integrity security service provides a method of ensuring the content that was received by the recipient(s) is the same as that which was sent by the originator. However, it must be noted that the implementation of the MMHS security services is dependent upon the security and assurance requirements that are to be met by those MMHS security services. As such, the identity of the signer of the MMHS message may be the user, the role the user is performing or the organization (or domain) the user belongs to.
           </t>
           <t>
             If the MMHS provides security services it MUST support the Message Integrity service.
@@ -2069,7 +2069,7 @@ Also update the table if we are not going to reference Sieve.-->
             Alternatively the MMHS MAY implement this service on origination supporting DKIM (profiled in <xref target="DKIM-Signatures"/>) to apply a digital signature to a MMHS message.
           </t>
           <t>
-            On reception the MMHS MUST support S/MIME and DKIM digital signatures.
+            On reception the MMHS MUST support verification of S/MIME and DKIM digital signatures.
           </t>
         </section>
         <section title="Message Data Separation" anchor="Message-Data-Separation">

@@ -1508,7 +1508,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             There is no current SMTP service that supports this element of service. Therefore this profile does not support this element of service.
           </t>
           <t>
-            However, this element of service MAY be supported by an MUA that supports Internet Message Access Protocol (<xref target="RFC3501"/>) or by MUAs and other MMHS components that provide proprietary mechanisms (i.e Directory Services).
+            However, this element of service MAY be supported by MUAs and other MMHS components that provide proprietary mechanisms (i.e Directory Services).
           </t>
         </section>
       </section>
@@ -2732,8 +2732,10 @@ Do requirements on the sending side differs from requirements on the generating 
     <references title="Informative References">
 
       <?rfc include="reference.RFC.5598"?>  <!-- Internet Mail Architecture -->
-      
-      <?rfc include="reference.RFC.3501"?> <!-- IMAP -->
+
+<!--IMAP:
+      <?rfc include="reference.RFC.3501"?>
+-->
 
       <reference anchor="STANAG-4406">
         <front>

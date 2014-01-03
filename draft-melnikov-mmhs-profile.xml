@@ -2335,7 +2335,7 @@ Also update the table if we are not going to reference Sieve.-->
           If the MMHS provides security services this profile requires that the MMHS SHOULD support DomainKeys Identified Mail (DKIM) Signatures profiled in <xref target="DKIM-Signatures"/> for digitally signing the MMHS message header fields.
           </t>
           <t>
-            The MMHS MUST include at least the following header fields to be signed:
+            The MMHS MUST include at least the following header fields to be signed (note that if a header field is absent, DKIM will provide protection from insertion of the header field):
           </t>
             <t>
               <list style="symbols">
@@ -2355,6 +2355,7 @@ Also update the table if we are not going to reference Sieve.-->
                   To, Cc, Bcc (if present)
                 </t>
                 <t>
+<!--////This is not sensible for MUAs-->
                   Received
                 </t>
                 <t>
@@ -2364,7 +2365,13 @@ Also update the table if we are not going to reference Sieve.-->
                   Expires
                 </t>
                 <t>
+                  Supersedes
+                </t>
+                <t>
                   Message-ID
+                </t>
+                <t>
+                  In-Reply-To, References
                 </t>
                 <t>
                   SIO-Label (if present)
@@ -2373,6 +2380,7 @@ Also update the table if we are not going to reference Sieve.-->
                   MMHS-Primary-Precedence (if present), MMHS-Copy-Precedence (if present), MMHS-Message-Type, MMHS-Extended-Authorisation-Info, MMHS-Authorizing-Users (if present)
                 </t>
                 <t>
+<!--////Signing this header field might cause inability to change priorities, which might be a bad thing for some deployments.-->
                   MT-Priority
                 </t>
               </list>
@@ -2410,8 +2418,6 @@ Do requirements on the sending side differs from requirements on the generating 
   The ability to insert MT-Priority header field <xref target="RFC6758"/>.
   </t>
 
-  <!--////Might need to reference SMTP Priority Tunneling here (?)-->
-  
   <t>Parsing and processing of Multipart/Report Content Type for the Reporting of Mail System Administrative Messages <xref target="RFC6522"/> containing message/delivery-status <xref target="RFC3464"/> and Message Disposition Notification (MDN) <xref target="RFC3798"/>.</t>
 
   <t>
@@ -2451,6 +2457,10 @@ Do requirements on the sending side differs from requirements on the generating 
       </section>
 
       <section title="Audit Trail and Logging">
+
+<!--////TBD-->
+        <t></t>
+
       </section>
     </section>
 

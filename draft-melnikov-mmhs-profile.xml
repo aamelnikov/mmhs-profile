@@ -1668,9 +1668,8 @@ server respectively.  Line breaks that do not start a new "C:" or
             This element of service allows the originator to indicate to the recipient the date and time after which the message is considered invalid. The intent of this element of service is to state the originator's assessment of the current applicability of a message. If the Expiry Date Indication is present, it shall be displayed to the recipients(s) to indicate the time after which this message should be longer be acted upon. It is left to the discretion of the recipient as to whether or not the message is discarded. 
           </t>
 <!--DELIVERBY SMTP extension is used to satisfy another requirement.-->
-<!--////Why "if supported by the MMHS"?-->
           <t>
-            The Expiry Date Indication element of service, if supported by the MMHS, SHALL use the Expires header field, as defined in <xref target="RFC2156"/>.
+            The Expiry Date Indication element of service SHALL use the Expires header field, as defined in <xref target="RFC2156"/>.
           </t>
         </section>
         <section title="Explicit Conversion" anchor="Explicit-Conversion">
@@ -2300,7 +2299,7 @@ Also update the table if we are not going to reference Sieve.-->
         </section>
         <section title="DKIM Digital Signatures" anchor="DKIM-Signatures">
           <t>
-            DKIM defines an organization-level digital signature authentication framework for Internet email, using public key cryptography and using the domain name service as its key server technology. However, it is possible to administer DKIM to support user-level signature granularity. This profile specifies the use of DKIM defined in <xref target="RFC6376"/> for providing an alternative security mechanism to S/MIME to deliver the Authentication of Origin (<xref target="Authentication-Of-Origin"/>), Non-repudiation of Origin (<xref target="Non-Repudiation-Of-Origin"/>) and Message Integrity (<xref target="Message-Integrity"/>) security services to the MMHS. However, the implementation of DKIM is dependent upon the security and assurance requirements that are to be met by the MMHS security services. An MMHS MAY implement DKIM (to apply digital signatures for the MMHS message header fields and message body) to meet those security and assurance requirements based on one of the following use cases:
+            DKIM <xref target="RFC6376"/> defines an organization-level digital signature authentication framework for Internet email, using public key cryptography and using the domain name service as its key server technology. However, it is possible to administer DKIM to support user-level signature granularity. This profile specifies the use of DKIM defined in <xref target="RFC6376"/> for providing an alternative security mechanism to S/MIME to deliver the Authentication of Origin (<xref target="Authentication-Of-Origin"/>), Non-repudiation of Origin (<xref target="Non-Repudiation-Of-Origin"/>) and Message Integrity (<xref target="Message-Integrity"/>) security services to the MMHS. However, the implementation of DKIM is dependent upon the security and assurance requirements that are to be met by the MMHS security services. An MMHS MAY implement DKIM (to apply digital signatures for the MMHS message header fields and message body) to meet those security and assurance requirements based on one of the following use cases:
           </t>
           <t>
             <list style="numbers">
@@ -2319,6 +2318,7 @@ Also update the table if we are not going to reference Sieve.-->
             </list>
           </t>
           <t>
+<!--////Change the SHOULD to MUST? ("MUST support one and/or another")-->
             To provide organization to organization security services: the recipient MUA SHOULD support DKIM digital signature verification or the MUA MUST support the Authentication-Results header field as specified in <xref target="RFC5451"/> according to the security policy; and the organization MTA <!-- MDA?? --> MUST support DKIM digital signature verfication and output the verification results (according to the security policy) to the Authentication-Results header field compliant with <xref target="RFC5451"/>.
           </t>
           <t>
@@ -2410,9 +2410,6 @@ Also update the table if we are not going to reference Sieve.-->
         <t>
       A Mail User Agent (MUA) compliant with this specification MUST support
 
-<!--////What does it mean when we say "MUST support DSN reports" in regards to MUAs?
-Do requirements on the sending side differs from requirements on the generating side?-->
-
 <list style="numbers">
 
   <t>Internet Message Format <xref target="RFC5322"/>.</t>
@@ -2421,29 +2418,60 @@ Do requirements on the sending side differs from requirements on the generating 
       <xref target="RFC2045"/>
       <xref target="RFC2046"/>
       <xref target="RFC2047"/>
-      <xref target="RFC2049"/>. [[Maybe be a bit more specific about what is required?]]</t>
-
-<!--////Do we need to list which header fields MUST be supported and which MAY be supported?-->
-  <t>Parsing, processing and having the ability to generate MMHS header fields <xref target="RFC6477"/>.</t>
-
-  <t>
-  The ability to insert MT-Priority header field <xref target="RFC6758"/>.
+      <xref target="RFC2049"/>.
+<!--////Anything else? format=flowed?-->
+      In particular they must be able to generate, display and process of message/rfc822, multipart/mixed and text/plain media types.
+      Additionally, the ability to decode application/zlib and application/gzip media types on receipt as defined in <xref target="RFC6713"/>.
   </t>
 
-  <t>Parsing and processing of Multipart/Report Content Type for the Reporting of Mail System Administrative Messages <xref target="RFC6522"/> containing message/delivery-status <xref target="RFC3464"/> and Message Disposition Notification (MDN) <xref target="RFC3798"/>.</t>
+<!--////Do we need to list which header fields MUST be supported and which MAY be supported?-->
+  <t>Parsing, processing and having the ability to generate MMHS header fields specified in <xref target="RFC6477"/>.</t>
+
+  <t>
+  The ability to specify priority on origination, in particular the ability to insert MT-Priority header field <xref target="RFC6758"/> into messsages to be sent.
+  </t>
+
+  <t>Parsing and processing of multipart/report media type for the Reporting of Mail System Administrative Messages <xref target="RFC6522"/> containing message/delivery-status <xref target="RFC3464"/> and Message Disposition Notification (MDN) <xref target="RFC3798"/>.</t>
 
   <t>
   The ability to request an MDN and the ability to generate an MDN in response to a request <xref target="RFC3798"/>.
   </t>
 
   <t>
-  The ability to send and receive signed and encrypted S/MIME messages <xref target="RFC5652"/> <xref target="RFC5751"/>.
+<!--////Does it need to be displayed on receipt?-->
+  The ability to indicate message language using the Content-Language header field, as defined in <xref target="RFC3282"/>.
   </t>
 
   <t>
-  The ability to send and receive ESS Security Labels <xref target="RFC2634"/>.
+  The ability to select message expiration date when composing a message (using the Expires header field <xref target="RFC2156"/>)
+  and display whether a message is expired or not upon receipt.
   </t>
-  
+
+  <t>
+  Use of SMTP extension for Delivery Status Notifications <xref target="RFC3461"/>, in particular support for NOTIFY, RET and ENVID parameters.
+  </t>
+
+  <t>
+  Use of the Deliver By SMTP extension <xref target="RFC2852"/> for specifying the Latest Delivery date for a message.
+  </t>
+
+  <t>
+  If supporting S/MIME for security services: the ability to send and receive signed and encrypted S/MIME messages <xref target="RFC5652"/> <xref target="RFC5751"/>.
+  </t>
+
+  <t>
+  If supporting S/MIME for security services: the ability to send and receive ESS Security Labels <xref target="RFC2634"/>.
+  </t>
+
+  <t>
+  If supporting DKIM for security services: support DKIM digital signature verification specified in <xref target="RFC6376"/>
+  or support the Authentication-Results header field as specified in <xref target="RFC5451"/> according to the security policy.
+  </t>
+
+  <t>
+  Support for SIO-Label header field <xref target="I-D.zeilenga-email-seclabel"/> on receipt.
+  </t>
+
 </list>
       </t>
 
@@ -2454,15 +2482,28 @@ Do requirements on the sending side differs from requirements on the generating 
 
 <list style="numbers">
 
+        <t>
+  Support for SIO-Label <xref target="I-D.zeilenga-email-seclabel"/> on origination.
+        </t>
+
+        <t>
+  Support replacing an earlier message with a new one with Supersedes header field <xref target="RFC2156"/>.
+  What about these:
+            Original-Encoded-Information-Types
+            Incomplete-Copy
+          ?
+        </t>
+
+        <t>
+  New SASL mechanisms:
+            For environment using X.509 certificates, use of SASL EXTERNAL <xref target="RFC4422"/> authentication mechanism is RECOMMENDED.
+            For environment using Kerberos, use of SASL GSSAPI <xref target="RFC4752"/> authentication mechanism is RECOMMENDED.
+            Support for SCRAM <xref target="RFC5802"/> is RECOMMENDED for environment using password based authentication.
+        </t>
+
 </list>
         </t>
 -->
-
-
-      
-<!--////S/MIME related + other Isode drafts (?)-->
-
-
 
         <t>MUA can also take advantage of SMTP extensions advertised by MSAs (see <xref target="msa-reqs"/>).</t>
 
@@ -2485,7 +2526,11 @@ Do requirements on the sending side differs from requirements on the generating 
 
 <list style="numbers">
 
-  <t>SMTP Extension for Authentication <xref target="RFC4954"/>.</t>
+  <t>SMTP Extension for Authentication <xref target="RFC4954"/>.
+  For environment using X.509 certificates, SASL EXTERNAL <xref target="RFC4422"/> authentication mechanism must be supported.
+  For environment using Kerberos, SASL GSSAPI <xref target="RFC4752"/> authentication mechanism must be supported.
+  For environment using password based authentication, SASL SCRAM <xref target="RFC5802"/> must be supported.
+  </t>
   <t>SMTP Extension for Secure SMTP over TLS <xref target="RFC3207"/>.</t>
   
   <t>SMTP Service Extension for Returning Enhanced Error Codes <xref target="RFC2034"/>.</t>
@@ -2503,7 +2548,21 @@ Do requirements on the sending side differs from requirements on the generating 
   <t>SMTP Extension for Message Size Declaration <xref target="RFC1870"/>.</t>
   <t>SMTP Extension for Command Pipelining <xref target="RFC2920"/>.</t>  
   <t>SMTP Extensions for Transmission of Large and Binary MIME Messages <xref target="RFC3030"/>.</t>
+
+  <t>Support Draft &amp; Release procedure using the MMHS-Authorizing-Users header field <xref target="I-D.melnikov-mmhs-authorizing-users"/>.</t>
   
+<!--////
+  If supporting S/MIME for security services: the ability to send and receive ESS Security Labels <xref target="RFC2634"/>.
+-->
+
+  <t>
+  If supporting S/MIME for security services: the ability to sign and/or encrypt S/MIME messages on bahalf of the originating domain as specified in <xref target="I-D.melnikov-smime-msa-to-mda"/>.
+  </t>
+
+  <t>
+  If supporting DKIM for security services: support DKIM digital signature generation as specified in <xref target="RFC6376"/>.
+  </t>
+
 </list>
       </t>
 
@@ -2514,7 +2573,6 @@ Do requirements on the sending side differs from requirements on the generating 
 <list style="numbers">
 
   <t>
-<!--/////Steve had it as mandatory? Check against requirements in other sections-->
     SMTP Submission Service Extension for Future Message Release <xref target="RFC4865"/>.
   </t>
 
@@ -2529,13 +2587,14 @@ Do requirements on the sending side differs from requirements on the generating 
       </section>
 
       <section title="Audit Trail and Logging">
+
+<t>TBD</t>
+
       </section>
       
     </section>
 
 
-    
-<!--////Keep in sync with the MSA's section-->
     
     <section title="Requirements on Mail Transfer Agents" anchor="mta-reqs">
 
@@ -2561,11 +2620,74 @@ Do requirements on the sending side differs from requirements on the generating 
   <t>SMTP Extension for Message Size Declaration <xref target="RFC1870"/>.</t>
   <t>SMTP Extension for Command Pipelining <xref target="RFC2920"/>.</t>  
   <t>SMTP Extensions for Transmission of Large and Binary MIME Messages <xref target="RFC3030"/>.</t>
-  
+
 </list>
         </t>
 
-      
+
+        <t>
+          Additionally border MTAs in originating domains MUST support
+
+          <list style="numbers">
+
+            <t>
+            Enforcement of correct Draft &amp; Release procedure using the MMHS-Authorizing-Users header field <xref target="I-D.melnikov-mmhs-authorizing-users"/>.
+            </t>
+
+            <t>
+              <!--////Also verify/decrypt first?-->
+              If supporting S/MIME for security services: the ability to sign and/or encrypt S/MIME messages on bahalf of the originating domain as specified in <xref target="I-D.melnikov-smime-msa-to-mda"/>.
+            </t>
+
+            <t>
+              If supporting DKIM for security services: support DKIM digital signature generation as specified in <xref target="RFC6376"/>.
+            </t>
+
+
+            <t>
+              If supporting S/MIME for security services: enforcement of correctness of ESS Security Labels <xref target="RFC2634"/>.
+            </t>
+
+
+            <t>
+            Enforcement of correctness of security labels in SIO-Label header field <xref target="I-D.zeilenga-email-seclabel"/>.
+            </t>
+
+          </list>
+        </t>
+
+
+
+
+        <t>
+          Additionally border MTAs in receiving domains MUST support
+
+          <list style="numbers">
+
+            <t>
+              If supporting S/MIME for security services: the ability to verify and/or decrypt S/MIME messages on bahalf of the receiving domain as specified in <xref target="I-D.melnikov-smime-msa-to-mda"/>.
+            </t>
+
+            <t>
+              If supporting DKIM for security services: support DKIM digital signature verification as specified in <xref target="RFC6376"/>.
+            </t>
+
+            <t>
+            Support for the Authentication-Results header field generation as specified in <xref target="RFC5451"/> if required by the security policy.
+            </t>
+
+            <t>
+            If supporting S/MIME for security services: enforcement of correctness of ESS Security Labels <xref target="RFC2634"/>.
+            </t>
+
+
+            <t>
+            Enforcement of correctness of security labels in SIO-Label header field <xref target="I-D.zeilenga-email-seclabel"/>.
+            </t>
+
+          </list>
+        </t>
+
         <t>
           The following SMTP extensions SHOULD be supported in MTAs compliant with this specification:
 

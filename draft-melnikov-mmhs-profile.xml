@@ -1410,10 +1410,14 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Content Type Indication" anchor="Content-Type-Indication">
           <t>
-            This element of service enables an originating Mail User Agent to indicate the type of each submitted message. In most cases, the content type will be obvious from the header fields that are present.
+            This element of service enables an originating Mail User Agent to indicate the type of each submitted message. In most cases, the content type can be determined from the header fields that are present.
           </t>
           <t>
             A Military Message MUST be indicated using the MMHS-Extended-Authorization-Info header field defined in <xref target="RFC6477"/>.
+          </t>
+          <t>
+            Note that the Content Type Indication element of service is not supported by the MIME Content-Type header field  defined in <xref target="RFC2045"/>, even though they have a similar name. 
+            The MIME Content-Type header field is is to describe only the data contained in the body of the message, and not the whole message itself.
           </t>
         </section>
         <section title="Converted Indication" anchor="Converted-Indication">
@@ -1482,7 +1486,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         <section title="Typed Body" anchor="Typed-Body">
           <t>
 <!--////Not sure what this mean!-->            
-            This element of service allows the nature and attributes of the body of the message, whereby the nature and attributes describe the body of the message, to be conveyed along with the body.
+            This element of service allows the nature and attributes of the body of the message to be conveyed along with the body.
           </t>
           <t>
             The MMHS MUST support this element of service whereby:
@@ -1550,7 +1554,7 @@ server respectively.  Line breaks that do not start a new "C:" or
           <t>
             This element of service allows a recipient to determine that the body of an incoming Military Message contains a Military Message that has been auto-forwarded by an autonomous Mail Submission Agent. This is used to distinguish the incoming Military Message that contains a Military Message that was manually forwarded by the original recipient. If automatic forwarding of Military Messages is supported by a Mail Submission Agent, then the Auto-forwarded Indication MUST be supported on origination.
           </t>
-<!--////Sadly, Sieve implementations don't add this-->          
+<!--////Sadly, Sieve implementations don't add this - so do we want to change this to not supported.-->          
           <t>
             The Auto-forwared Indication MUST use the Autoforwarded header field, as defined in <xref target="RFC2156"/>.
           </t>
@@ -1570,8 +1574,6 @@ server respectively.  Line breaks that do not start a new "C:" or
           </t>
           <t>
             There is no current SMTP service that supports allows the Body Part Encryption Indication element of service. Therefore this profile does not support the Body Part Encryption Indication element of service.
-<!--////-->
-            [[Refer to whole message encryption options]].
           </t>
         </section>
         <section title="Conversion Prohibited" anchor="Conversion-Prohibited">
@@ -1600,7 +1602,7 @@ server respectively.  Line breaks that do not start a new "C:" or
         </section>
         <section title="Deferred Delivery" anchor="Deferred-Delivery">
           <t>
-            This element of service enables an originating Mail User Agent to instruct the Mail Transfer Agent that a military message being submitted shall be delivered no sooner than a specified date and time. When tis service is requested, it MUST be logged for audit and tracing purposes.
+            This element of service enables an originating Mail User Agent to instruct the Mail Transfer Agent that a military message being submitted shall be delivered no sooner than a specified date and time. When this service is requested, it MUST be logged for audit and tracing purposes.
           </t>
           <t>
             Deferred Delivery MUST be specified in accordance with <xref target="RFC4865"/>.
@@ -1649,7 +1651,7 @@ server respectively.  Line breaks that do not start a new "C:" or
             This element of service provides information to a recipient about the DL(s) that resulted in the message being delivered to this recipient. This element of service also provides a mechanism to protect against potential nested DL looping.
           </t>
           <t>
-            [[What are we going to do here?]]
+            DL Expansion History Indication is not supported by this profile.
           </t>
           <t>
             The DL-Expansion-History header defined in <xref target="RFC2156"/> SHALL NOT be used. DL-Expansion-History header MAY be present in messages gatewayed from X.400.
@@ -1686,6 +1688,9 @@ server respectively.  Line breaks that do not start a new "C:" or
           </t>
           <t>
             The Forwarded MM Indication element of service, if supported by the MMHS, SHALL use the Content-Type header field, as defined in <xref target="RFC2045"/> with the value "message/rfc822" and use the Content Type Indication, as defined in <xref target="Content-Type-Indication"/>, within the headers of the embedded message.
+          </t>
+          <t>
+            Note that the Content-Type header field may be embedded within an outer "multipart/mixed" MIME body where, for example, the fowarding Military Message also includes delivery information, covering text or additional attachments.
           </t>
         </section>
         <section title="Grade of Delivery Selection" anchor="Grade-Of-Delivery-Selection">
@@ -1904,14 +1909,15 @@ Also update the table if we are not going to reference Sieve.-->
             This element of service allows the originator to indicate to the recipient(s) a user specified short description of the message.
           </t>
           <t>
-<!--////This is listed as MAY in the table. Is that a problem?-->
-            The Subject Indication element of service MUST be supported by the MMHS, using the Subject header field as defined in <xref target="RFC5322"/>.
+            The Subject Indication element of service MAY be supported by the MMHS, using the Subject header field as defined in <xref target="RFC5322"/>.
           </t>
         </section>
         <section title="Use of Distribution List" anchor="Use-Of-Distribution-List">
-
           <t>
-<!--////Add description-->
+            This element of service enables an origintaing MUA to specify, on a per-recipient basis, a Distribution List in place of all the individual recipients (users or nested DLs). 
+            The MTA will add the member of the list to the recipients and send it to those members. Support for this service shall be optional.
+            Determination of where in the MMHS the DL expansion takes place may be the subject of natio policy based upon security requirements. 
+            National policy may also dictate the preferential support of the <xref target="Use-Of-Address-List">Use of Address List</xref> and <xref target="Exempted-Addresses">Exempted Addsresses</xref>Elements of Service instead of the Use of Distribution List Element of Service.
           </t>
           <t>
             Use of Distribution List is not supported by this profile.
@@ -1924,12 +1930,12 @@ Also update the table if we are not going to reference Sieve.-->
         </t>
         <section title="Primary Precedence" anchor="Primary-Precedence">
           <t>
-            The MMHS-Primary-Precedence header field defined in <xref target="RFC6477"/> MUST be supported by the MMHS if the military message contains "To:" ("action") addresses.
+            The MMHS-Primary-Precedence header field defined in <xref target="RFC6477"/> MUST be supported and included by the MMHS if the military message contains "To:" ("action") addresses.
           </t>
         </section>
         <section title="Copy Precedence" anchor="Copy-Precedence">
           <t>
-            The MMHS-Copy-Precedence header field defined in <xref target="RFC6477"/> MUST be supported by the MMHS if the military message contains "Cc:" or "Bcc:" ("information") addresses.
+            The MMHS-Copy-Precedence header field defined in <xref target="RFC6477"/> MUST be supported and included by the MMHS if the military message contains "Cc:" or "Bcc:" ("information") addresses.
           </t>
         </section>
         <section title="Message Type" anchor="Message-Type">
@@ -1945,7 +1951,7 @@ Also update the table if we are not going to reference Sieve.-->
         <section title="Extended Authorization Info" anchor="Extended-Authorization-Info">
           <t>
 <!--////This is listed as MAY in the table-->
-            The MMHS-Extended-Authorisation-Info header field defined in <xref target="RFC6477"/> MUST be supported by the MMHS.
+            The MMHS-Extended-Authorisation-Info header field defined in <xref target="RFC6477"/> MUST be supported and included by the MMHS in a military message.
           </t>
         </section>
         <section title="Distribution Code" anchor="Distribution-Code">
@@ -1960,7 +1966,11 @@ Also update the table if we are not going to reference Sieve.-->
           </t>
         </section>
         <section title="Clear Service" anchor="Clear-Service">
-          <t>This element of service indicates to the recipient that the military message containing classified information has been transmitted over non-secure communications links. This element of service, if permitted by the security policy, MAY be supported by using the printable string "CLEAR" in the privacy mark component of the security label (see <xref target="Security-Labels"/>) along with an appropriate security policy identifier. If this element of service is supported by the MMHS, the MUA MUST prominently display to the user that the military message has been transmitted over non-secure communication links.</t>
+          <t>
+           This element of service indicates to the recipient that the military message containing classified information has been transmitted over non-secure communications links. 
+          This element of service, if permitted by the security policy, MAY be supported by using the printable string "CLEAR" in the privacy mark component of the security label (see <xref target="Security-Labels"/>) along with an appropriate security policy identifier. 
+          If this element of service is supported by the MMHS, the MUA MUST prominently display to the user that the military message has been transmitted over non-secure communication links.
+        </t>
         </section>
         <section title="Other Recipient Indicator" anchor="Other-Recipient-Indicator">
           <t>

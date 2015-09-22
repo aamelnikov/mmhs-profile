@@ -7,7 +7,7 @@
 <?rfc comments="yes" ?>
 <?rfc inline="yes" ?>
 
-<rfc ipr="trust200902" category="info" docName='draft-melnikov-mmhs-profile-06'>
+<rfc ipr="trust200902" category="info" docName='draft-melnikov-mmhs-profile-08'>
  <front>
   <title abbrev="MMHS over SMTP">
    Military Message Handling System (MMHS) over SMTP

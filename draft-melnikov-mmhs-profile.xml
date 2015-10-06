@@ -7,7 +7,7 @@
 <?rfc comments="yes" ?>
 <?rfc inline="yes" ?>
 
-<rfc ipr="trust200902" category="info" docName='draft-melnikov-mmhs-profile-08'>
+<rfc ipr="trust200902" category="info" docName='draft-melnikov-mmhs-profile-09'>
  <front>
   <title abbrev="MMHS over SMTP">
    Military Message Handling System (MMHS) over SMTP Profile
@@ -88,7 +88,7 @@
      This non-normative section provides a summary of the sections in this document that specifies the MMHS Profile; refer to the sections that follow for a normative specification of the MMHS Profile.
     </t>
     <t>
-     The fundamental purpose of STANAG 4406 Edition 2 or <xref target="ACP123"/> is to define a common message service to be provided between all participating organisations (or domains).  STANAG 4406 Edition 2 and <xref target="ACP123"/> achieve this by defining the Military Messaging Elements of Service (EoS) that are required to be supported. <xref target="ACP123"/> defines EoS as 'abstractions that describe features of a system for which the user of that system has direct access'. Note for the purposes of this MMHS Profile a 'user' can be described as: an end user; an organisation (or domain); a Mail User Agent (MUA); a Mail Submission Agent (MSA); or, a Mail Transfer Agent (MTA). <!-- MDA?? -->
+     The fundamental purpose of STANAG 4406 Edition 2 or <xref target="ACP123"/> is to define a common message service to be provided between all participating organisations (or domains).  STANAG 4406 Edition 2 and <xref target="ACP123"/> achieve this by defining the Military Messaging Elements of Service (EoS) that are required to be supported. <xref target="ACP123"/> defines EoS as 'abstractions that describe features of a system for which the user of that system has direct access'. Note for the purposes of this MMHS Profile a 'user' can be described as: an end user; an organisation (or domain); a Mail User Agent (MUA); a Mail Submission Agent (MSA); a Mail Transfer Agent (MTA); or, Mail Delivery Agent (MDA).
     </t>
     <t>
      The MMHS Profile adopts the EoS defined in <xref target="ACP123"/>.
@@ -1398,6 +1398,7 @@ server respectively.  Line breaks that do not start a new "C:" or
       This element of service enables an Mail User Agent and an Mail Transfer Agent to establish access and manage information associated with access establishment. This includes the ability to identify and validate the identity of the other.
      </t>
      <t>
+      <!--////Add UTA drafts references as appropriate-->
       Strong authentication in the bind operation is mandatory. Strong authentication MUST be supported using SMTP Extension for Authentication <xref target="RFC4954"/> and SMTP Extension for Secure SMTP over TLS <xref target="RFC3207"/>.
      </t>
      <t>
@@ -1492,7 +1493,7 @@ server respectively.  Line breaks that do not start a new "C:" or
       The MMHS MUST support this element of service whereby:
       <list style="symbols">
        <t>
-        A Mail User Agent MUST support Multipurpose Internet Mail Extensions (MIME) <xref target="RFC2045"/>, <xref target="RFC2046"/>, <xref target="RFC2047"/> and <xref target="RFC2049"/>; and,
+        A Mail User Agent MUST support Multipurpose Internet Mail Extensions (MIME) <xref target="RFC2045"/>, <xref target="RFC2046"/>, <xref target="RFC2047"/>, <xref target="RFC2049"/>, <xref target="RFC2231"/> and <xref target="RFC3676"/>; and,
        </t>
        <t>
         A Mail Submission Agent MUST support SMTP Extension for 8-bit MIME transport <xref target="RFC6152"/>.
@@ -1686,7 +1687,8 @@ server respectively.  Line breaks that do not start a new "C:" or
       This element of service allows a message, plus its delivery information to be sent as a body part inside another message. In a multi-part body the forwarded message may be one of serveral body parts of various types.
      </t>
      <t>
-      The Forwarded MM Indication element of service, if supported by the MMHS, SHALL use the Content-Type header field, as defined in <xref target="RFC2045"/> with the value "message/rfc822" and use the Content Type Indication, as defined in <xref target="Content-Type-Indication"/>, within the headers of the embedded message.
+      The Forwarded MM Indication element of service, if supported by the MMHS, SHALL use the Content-Type header field, as defined in <xref target="RFC2045"/> with the value "message/rfc822" and use the Content Type Indication <!--////But this is marked as unsupported?-->
+      , as defined in <xref target="Content-Type-Indication"/>, within the headers of the embedded message.
      </t>
      <t>
       Note that the Content-Type header field may be embedded within an outer "multipart/mixed" MIME body where, for example, the fowarding Military Message also includes delivery information, covering text or additional attachments.
@@ -1764,7 +1766,7 @@ server respectively.  Line breaks that do not start a new "C:" or
       The MMHS MUST support this element of service whereby:
       <list style="symbols">
        <t>
-        A Mail User Agent MUST support Multipurpose Internet Mail Extensions (MIME) <xref target="RFC2045"/>, <xref target="RFC2046"/>, <xref target="RFC2047"/> and <xref target="RFC2049"/>; and,
+        A Mail User Agent MUST support Multipurpose Internet Mail Extensions (MIME) <xref target="RFC2045"/>, <xref target="RFC2046"/>, <xref target="RFC2047"/>, <xref target="RFC2049"/> and <xref target="RFC2231"/>; and,
        </t>
        <t>
         A Mail Submission Agent MUST support SMTP Extension for 8-bit MIME transport <xref target="RFC6152"/>.
@@ -2328,7 +2330,7 @@ Also update the table if we are not going to reference Sieve.-->
      </t>
      <t>
       <!--////Change the SHOULD to MUST? ("MUST support one and/or another")-->
-      To provide organization to organization security services: the recipient MUA SHOULD support DKIM digital signature verification or the MUA MUST support the Authentication-Results header field as specified in <xref target="RFC5451"/> according to the security policy; and the organization MTA <!-- MDA?? --> MUST support DKIM digital signature verification and output the verification results (according to the security policy) to the Authentication-Results header field compliant with <xref target="RFC5451"/>.
+      To provide organization to organization security services: the recipient MUA SHOULD support DKIM digital signature verification or the MUA MUST support the Authentication-Results header field as specified in <xref target="RFC7601"/> according to the security policy; and the organization border MTA (or MDA) MUST support DKIM digital signature verification and output the verification results (according to the security policy) to the Authentication-Results header field compliant with <xref target="RFC7601"/>.
      </t>
      <t>
       To provide end to end security services the recipient MUA MUST support DKIM digital signature verification specified in <xref target="RFC6376"/>.
@@ -2377,10 +2379,6 @@ Also update the table if we are not going to reference Sieve.-->
        </t>
        <t>
         To, Cc, Bcc
-       </t>
-       <t>
-        <!--////This is not sensible for MUAs-->
-        Received
        </t>
        <t>
         Sender
@@ -2433,10 +2431,11 @@ Also update the table if we are not going to reference Sieve.-->
        <xref target="RFC2045"/>
        <xref target="RFC2046"/>
        <xref target="RFC2047"/>
-       <xref target="RFC2049"/>.
-       <!--////Anything else? format=flowed?-->
+       <xref target="RFC2049"/>
+       <xref target="RFC2231"/>.
        In particular they must be able to generate, display and process of message/rfc822, multipart/mixed and text/plain media types.
-       Additionally, the ability to decode application/zlib and application/gzip media types on receipt as defined in <xref target="RFC6713"/>.
+       Additionally, the ability to decode application/zlib and application/gzip media types on receipt as defined in <xref target="RFC6713"/>
+       and support for format=flowed text/plain media type parameter <xref target="RFC3676"/>.
       </t>
 
       <!--////Do we need to list which header fields MUST be supported and which MAY be supported?-->
@@ -2484,7 +2483,7 @@ Also update the table if we are not going to reference Sieve.-->
 
       <t>
        If supporting DKIM for security services: support DKIM digital signature verification specified in <xref target="RFC6376"/>
-       or support the Authentication-Results header field as specified in <xref target="RFC5451"/> according to the security policy.
+       or support the Authentication-Results header field as specified in <xref target="RFC7601"/> according to the security policy.
       </t>
 
       <t>
@@ -2750,7 +2749,6 @@ Also update the table if we are not going to reference Sieve.-->
       </t>
 
       <t>
-       <!--////Also verify/decrypt first?-->
        If supporting S/MIME for security services: the ability to sign and/or encrypt S/MIME messages on bahalf of the originating domain as specified in <xref target="I-D.melnikov-smime-msa-to-mda"/>.
       </t>
 
@@ -2768,6 +2766,14 @@ Also update the table if we are not going to reference Sieve.-->
        Enforcement of correctness of security labels in SIO-Label header field <xref target="RFC7444"/>.
       </t>
 
+      <t>
+       SMTP Extension for Secure SMTP over TLS <xref target="RFC3207"/>.
+      </t>
+
+      <t>
+       SMTP Extension for Authentication <xref target="RFC4954"/>.
+      </t>
+       
      </list>
     </t>
 
@@ -2788,7 +2794,7 @@ Also update the table if we are not going to reference Sieve.-->
       </t>
 
       <t>
-       Support for the Authentication-Results header field generation as specified in <xref target="RFC5451"/> if required by the security policy.
+       Support for the Authentication-Results header field generation as specified in <xref target="RFC7601"/> if required by the security policy.
       </t>
 
       <t>
@@ -2800,33 +2806,32 @@ Also update the table if we are not going to reference Sieve.-->
        Enforcement of correctness of security labels in SIO-Label header field <xref target="RFC7444"/>.
       </t>
 
+       <t>
+         SMTP Extension for Secure SMTP over TLS <xref target="RFC3207"/>.
+       </t>
+
+       <t>
+         SMTP Extension for Authentication <xref target="RFC4954"/>.
+       </t>
+       
      </list>
     </t>
 
+<!--////
     <t>
      The following SMTP extensions SHOULD be supported in MTAs compliant with this specification:
 
      <list style="numbers">
 
-      <t>
-       SMTP Extension for Secure SMTP over TLS <xref target="RFC3207"/>.
-      </t>
-
-      <!--////draft-melnikov-smtp-altrecip-on-error - maybe in the future
+draft-melnikov-smtp-altrecip-on-error - maybe in the future
   <t>SMTP extension for Alternate Recipient Delivery Option.</t>
--->
 
      </list>
 
-
-     <!--////MAY support this (?):
-  <t>SMTP Extension for Authentication <xref target="RFC4954"/>.</t>
+    </t>
 -->
 
-
-    </t>
-
-   </section>
+  </section>
 
    <section title="Audit Trail and Logging">
     <t>
@@ -2883,7 +2888,9 @@ Also update the table if we are not going to reference Sieve.-->
     messaging service to STANAG 4406 Edition 2 or <xref target="ACP123"/> provided using Internet Electronic Mail, SMTP and their extensions, S/MIME and DKIM.
    </t>
    <t>
-   The MMHS Profile is not defining new protocol, therefore no new security concerns are raised that are not already captured by Email <xref target="RFC5322"/>, MIME <xref target="RFC2045"/>, S/MIME <xref target="RFC5751"/>, DKIM <xref target="RFC6376"/>, ESS <xref target="RFC2634"/> and SIO-Label <xref target="RFC7444"/> in general.
+   The MMHS Profile is not defining new protocol, therefore no new security concerns are raised that are not already captured by
+   Email <xref target="RFC5322"/>, MIME <xref target="RFC2045"/>, S/MIME <xref target="RFC5751"/>, DKIM <xref target="RFC6376"/>,
+   ESS <xref target="RFC2634"/> and SIO-Label <xref target="RFC7444"/> in general.
    </t>
   </section>
 
@@ -2931,12 +2938,13 @@ Also update the table if we are not going to reference Sieve.-->
    <!-- SMTP Priority Tunnelling -->
 
    <!-- MIME: -->
-   <!--////+RFC 2231?-->
    <?rfc include="reference.RFC.2045"?>
    <!--////+RFC 6657 ("charset" for text/*)?-->
    <?rfc include="reference.RFC.2046"?>
    <?rfc include="reference.RFC.2047"?>
    <?rfc include="reference.RFC.2049"?>
+   <?rfc include="reference.RFC.2231"?>
+   <?rfc include="reference.RFC.3676"?><!--format=flowed-->
    <?rfc include="reference.RFC.6713"?>
    <!-- application/zlib and application/gzip -->
 
@@ -2971,7 +2979,7 @@ Also update the table if we are not going to reference Sieve.-->
    <?rfc include="reference.RFC.5228"?>
    <!-- Sieve -->
 
-   <?rfc include="reference.RFC.5451"?>
+   <?rfc include="reference.RFC.7601"?>
    <!-- Authentication-Results -->
 
    <?rfc include="reference.RFC.2156"?>

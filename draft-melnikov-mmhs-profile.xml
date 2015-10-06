@@ -53,7 +53,7 @@
    </address>
   </author>
 
-  <date year="2014"/>
+  <date year="2015"/>
 
   <keyword>MMHS</keyword>
   <keyword>SMTP</keyword>
@@ -2527,7 +2527,6 @@ Also update the table if we are not going to reference Sieve.-->
 
    <section title="Audit Trail and Logging">
 
-    <!--////TBD-->
     <t>
      Storage of audit data by the MUA is required to support security monitoring, accountability, and
      tractability of messages to the source. This information will be used to provide accountability and support for
@@ -2670,7 +2669,7 @@ Also update the table if we are not going to reference Sieve.-->
      messages to the source. This information will be used to provide accountability and support for any required
      tracer actions. All stored audit data shall be maintained for at least ten (10) days. Data will be recorded and
      stored at each MSA to provide an audit capability for messages that are delivered and submitted. The following
-     tale indicates which audit information is required at a minimum to be logged by the MSA for delivered and
+     table indicates which audit information is required at a minimum to be logged by the MSA for delivered and
      submitted messages. Policy may require longer retention periods and additional information be
      stored. The integrity of audit logs must be protected.
     </t>
@@ -2837,7 +2836,7 @@ Also update the table if we are not going to reference Sieve.-->
      stored at each MTA to provide an audit capability for messages that are sent and received. The following
      table indicates which audit information is required at a minimum to be logged by the MTA for inbound and
      outbound messages. Policy may require longer retention periods and additional information be
-     stored. The integrity of audit logs must be protected
+     stored. The integrity of audit logs must be protected.
     </t>
 
     <texttable>
